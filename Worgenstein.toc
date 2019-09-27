@@ -1,0 +1,27 @@
+## Interface: 80100
+## Title: Worgenstein
+## Notes: A WoW LUA version of Wolfenstein
+## Author: Zee (Songzee - Argent Dawn EU)
+## DefaultState: enabled
+## LoadOnDemand: 0
+## SavedVariables: WorgensteinSettings, WorgensteinMapData
+## X-eMail: cucflavius@gmail.com
+## X-Website: none
+## X-License: GPL
+## Version: 1.0
+
+WindowAPI\WindowAPIFiles.xml
+DataType.lua
+DataTypeNames.lua
+DataTypeProperties.lua
+Debugger.lua
+Raytracing.lua
+Canvas.lua
+Map.lua
+MapEditor.lua
+Data.lua
+Player.lua
+Weapon.lua
+AI.lua
+Settings.lua
+Worgenstein.lua
