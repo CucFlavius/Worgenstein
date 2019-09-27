@@ -1,6 +1,14 @@
 Zee.Worgenstein.Map.DataTypeProperties = Zee.Worgenstein.Map.DataTypeProperties or {};
 local Properties = Zee.Worgenstein.Map.DataTypeProperties;
 local DataType = Zee.Worgenstein.Map.DataType;
+Zee.Worgenstein.Map.DataTypeProperties.SecondLayerType = {};
+local SecondLayerType = Zee.Worgenstein.Map.DataTypeProperties.SecondLayerType;
+
+SecondLayerType.Off = 0;
+SecondLayerType.Indented = 1;
+SecondLayerType.OneLevelAbove = 2;
+SecondLayerType.OneLevelAboveIndented = 3;
+
 
 --tileset/7.0/araknashal/data/7an_vrykulbones01_256.blp
 
@@ -21,8 +29,30 @@ Properties[DataType.Nothing] = { wall = false }
 ---- Walls ----
 ---------------
 Properties[DataType.GreyBrick1] = {	wall = true }
-Properties[DataType.GreyBrick2] = {	wall = true }
-Properties[DataType.GreyBrick3] = {	wall = true }
+
+
+Properties[DataType.GreyBrick2] = 
+{	
+wall = true,
+texture = 953619,
+layer2 = SecondLayerType.OneLevelAboveIndented,
+layer2_texture = 953628,
+layer2_indentation = 0.3,
+layer2_height = 4,
+}
+
+
+
+Properties[DataType.GreyBrick3] = 
+{	
+wall = true,
+texture = 953619,
+layer2 = SecondLayerType.OneLevelAboveIndented,
+layer2_texture = 953628,
+layer2_indentation = 0.3,
+layer2_height = 3
+}
+
 Properties[DataType.GreyBrick_Flag] = {	wall = true }
 Properties[DataType.GreyBrick_Worgenstein] = {	wall = true }
 Properties[DataType.GreyBrick_Eagle] = {	wall = true }

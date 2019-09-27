@@ -11,16 +11,20 @@ local DataType = Map.DataType;
 local Settings = Zee.Worgenstein.Settings;
 local Properties = Zee.Worgenstein.Map.DataTypeProperties;
 local BlockName = Zee.Worgenstein.Map.DataTypeNames;
+local SecondLayerType = Zee.Worgenstein.Map.DataTypeProperties.SecondLayerType;
+
 -- Properties --
 Canvas.resolution = {};
 Canvas.resolution.x = 640;
 Canvas.resolution.y = 480;
 Canvas.renderDensity = 4;
+Canvas.groundVisLines = 50;
 Canvas.renderDensityGround = 8;
 Canvas.renderLines = Canvas.resolution.x / Canvas.renderDensity;
 --Canvas.renderLinesVertical = Canvas.resolution.y / Canvas.renderDensityGround;
 Canvas.HUDBarHeight = 100;
-Canvas.renderLinesList = {};
+Canvas.renderLinesList = {};		-- first layer wall render lines
+Canvas.renderLinesList2 = {};		-- second layer wall render lines
 --Canvas.renderLinesGroundList = {};
 Canvas.spriteList = {};
 Canvas.spriteFrameList = {};
@@ -33,6 +37,9 @@ Canvas.currentDoorAnimation = nil;
 Canvas.animatingDoor = false;
 Canvas.openDoor = nil;
 Canvas.doorCoords = {};
+Canvas.ambientLight = { 0.8, 0.8, 1 };
+Canvas.fogColor = { 1, 1, 1 }; -- reverse rgb values (1,1,1) = black
+Canvas.fogDistance = 15;
 
 function Canvas.DoorAnimation()
 	if Canvas.animatingDoor == true then
@@ -110,19 +117,15 @@ function Canvas.Create()
 	Canvas.skyBox:SetPoint("CENTER",0, Canvas.HUDBarHeight /2);
 	Canvas.skyBox:Show();
 	Canvas.skyBox:SetFrameLevel(9);
+	--Canvas.skyBox:SetModel(130623); -- legion green skybox
 	Canvas.skyBox:SetModel(130623);
-	--Zee.Worgenstein.Canvas.skyBox:SetPosition(50,160,140);
-	Canvas.skyBox:SetRotation(0);
+	--Canvas.skyBox:SetRotation(0);
 
 	-- create the screen frame where everything is rendered
 	Canvas.renderFrame = CreateFrame("Frame",nil,Canvas.mainFrame);
 	Canvas.renderFrame:SetFrameStrata("BACKGROUND");
 	Canvas.renderFrame:SetWidth(Canvas.resolution.x) -- Set these to whatever height/width is needed 
 	Canvas.renderFrame:SetHeight(Canvas.resolution.y + 20) -- for your Texture
-	--Canvas.renderFrame.texture = Canvas.renderFrame:CreateTexture(nil,"BACKGROUND")
-	--Canvas.renderFrame.texture:SetTexture("Interface\\AddOns\\Worgenstein\\GFX\\Background.blp", false);
-	--Canvas.renderFrame.texture:SetVertexColor(.3,.3,.3,1);
-	--Canvas.renderFrame.texture:SetAllPoints(Canvas.renderFrame)
 	Canvas.renderFrame:SetPoint("CENTER",0, Canvas.HUDBarHeight /2);
 	Canvas.renderFrame:Show();
 	Canvas.renderFrame:SetFrameLevel(10);
@@ -157,6 +160,21 @@ function Canvas.Create()
 		Canvas.renderLinesList[k] = Canvas.renderLine;
 	end
 
+	-- create the wall frames layer 2
+	for k = 1, Canvas.renderLines, 1 do
+		Canvas.renderLine2 = CreateFrame("Frame",nil,Canvas.renderFrame);
+		Canvas.renderLine2:SetFrameStrata("BACKGROUND");
+		Canvas.renderLine2:SetWidth(Canvas.renderDensity) -- Set these to whatever height/width is needed 
+		Canvas.renderLine2:SetHeight(10) -- for your Texture
+		Canvas.renderLine2.texture = Canvas.renderLine2:CreateTexture(nil,"BACKGROUND")
+		Canvas.renderLine2.texture:SetTexture("tileset/expansion05/spiresofarrak/6sa_rock01_1024.blp",false);
+		Canvas.renderLine2.texture:SetAllPoints(Canvas.renderLine2);
+		Canvas.renderLine2:SetPoint("LEFT",(k * Canvas.renderDensity) - (Canvas.renderDensity/2) - 0.01, 100);
+		Canvas.renderLine2:Show();
+		Canvas.renderLine2:SetFrameLevel(16);	
+		Canvas.renderLinesList2[k] = Canvas.renderLine2;
+	end	
+
 	-- create HUD frame
 	Canvas.HUDFrame = CreateFrame("Frame",nil,Canvas.mainFrame);
 	Canvas.HUDFrame:SetFrameStrata("MEDIUM");
@@ -188,20 +206,18 @@ end
 function Canvas.CreateFloor()
 	Canvas.Floor = {}
 	-- create the floor frames
-	for k = 1, 50, 1 do
+	for k = 1, Canvas.groundVisLines, 1 do
 		Canvas.Floor[k] = CreateFrame("Frame",nil,Canvas.renderFrame);
 		Canvas.Floor[k]:SetFrameStrata("BACKGROUND");
 		Canvas.Floor[k]:SetWidth(Canvas.resolution.x) -- Set these to whatever height/width is needed 
 		Canvas.Floor[k]:SetHeight(5) -- for your Texture
 		Canvas.Floor[k].texture = Canvas.Floor[k]:CreateTexture(nil,"BACKGROUND")
 		Canvas.Floor[k].texture:SetTexture(852895,"REPEAT", "REPEAT");
-		--Canvas.Floor[k].texture:SetHorizTile(true);
-		--Canvas.Floor[k].texture:SetVertTile(true);
 		Canvas.Floor[k].texture:SetTexCoord(0, 1, k * 0.02, k * 0.02 - 0.02)
 		Canvas.Floor[k].texture:SetAllPoints(Canvas.Floor[k]);
-		Canvas.Floor[k]:SetPoint("BOTTOM", 0, k * 5);
-		local vertexColor = 1 - (k/50);
-		Canvas.Floor[k].texture:SetVertexColor(vertexColor, vertexColor, vertexColor);
+		Canvas.Floor[k]:SetPoint("BOTTOM", 0, (k * 5) - 5);
+		local vertexColor = 1 - (k/Canvas.groundVisLines);
+		Canvas.Floor[k].texture:SetVertexColor(vertexColor * Canvas.ambientLight[1], vertexColor* Canvas.ambientLight[2], vertexColor* Canvas.ambientLight[3]);
 		Canvas.Floor[k]:Show();
 		Canvas.Floor[k]:SetFrameLevel(16);	
 	end	
@@ -632,7 +648,7 @@ end
 function Canvas.Render()
 
 	Canvas.skyBox:SetRotation(math.rad(-Player.Direction));
-
+	--Canvas.skyBox:SetPitch(math.rad(90));
 	local previousHeight = 0;
 	for k = 1, Canvas.renderLines, 1 do
 		local direction = (Player.Direction + (Player.FoV/2)) - (k * Canvas.rayAngle);
@@ -649,30 +665,84 @@ function Canvas.Render()
 
 		-- UV Map --
 		if Properties[ray.blockType].wall == true then
-			Canvas.renderLinesList[k].texture:SetTexCoord(ray.uvDistance, ray.uvDistance + (ray.uvDirection * ray.distanceCorrected/100), 1, 0)
+			Canvas.renderLinesList[k].texture:SetTexCoord(ray.uvDistance, ray.uvDistance + (ray.uvDirection * ray.distanceCorrected/100), 1, 0);
 		end
 		if Properties[ray.blockType].door == true then
-			Canvas.renderLinesList[k].texture:SetTexCoord(ray.uvDistance, ray.uvDistance + (ray.uvDirection * ray.distanceCorrected/100), 1, 0)
+			Canvas.renderLinesList[k].texture:SetTexCoord(ray.uvDistance, ray.uvDistance + (ray.uvDirection * ray.distanceCorrected/100), 1, 0);
 		end
 
 		-- Shading --
-		local shading = 1 - (ray.distance/10);
+		local distanceFogValue = 1 - (ray.distance/Canvas.fogDistance);
 		if ray.edgeHit <= 2 then	-- hit side edge
 			local darken = 0.7;
-			shading = shading*darken;
+			distanceFogValue = distanceFogValue*darken;
 		end
+		local shading = { max(distanceFogValue, 1-Canvas.fogColor[1]), max(distanceFogValue, 1-Canvas.fogColor[2]), max(distanceFogValue, 1-Canvas.fogColor[3]) };
+
+
 
 		if Properties[ray.blockType].color ~= nil then
 			local color = Properties[ray.blockType].color;
-			Canvas.renderLinesList[k].texture:SetVertexColor(color[1]*shading,color[2]*shading,color[3]*shading,color[4]);
+			Canvas.renderLinesList[k].texture:SetVertexColor(
+				color[1] * shading[1] * Canvas.ambientLight[1],
+				color[2] * shading[2] * Canvas.ambientLight[2],
+				color[3] * shading[3] * Canvas.ambientLight[3],
+				color[4]);
 		else
-			Canvas.renderLinesList[k].texture:SetVertexColor(shading,shading,shading,1);
+			Canvas.renderLinesList[k].texture:SetVertexColor(
+				shading[1] * Canvas.ambientLight[1],
+				shading[2] * Canvas.ambientLight[2],
+				shading[3] * Canvas.ambientLight[3],
+				1);
 		end
 
 		-- Texture --
 		if Properties[ray.blockType].texture ~= nil then
 			Canvas.renderLinesList[k].texture:SetTexture(Properties[ray.blockType].texture);
+		else
+			Canvas.renderLinesList[k].texture:SetColorTexture(0,1,0);
 		end
+
+		-- Second Layer --
+		if Properties[ray.blockType].layer2 ~= SecondLayerType.Off then
+			if Properties[ray.blockType].layer2_height == nil then Properties[ray.blockType].layer2_height = 1; end
+			Canvas.renderLinesList2[k]:Show();
+			local distance = ray.distanceCorrected;
+			if Properties[ray.blockType].layer2 == SecondLayerType.Indented or Properties[ray.blockType].layer2 == SecondLayerType.OneLevelAboveIndented then
+				distance = ray.distanceCorrected + Properties[ray.blockType].layer2_indentation;
+			end
+
+			Canvas.renderLinesList2[k]:SetPoint("LEFT",(k * Canvas.renderDensity) - (Canvas.renderDensity/2) - 0.01, Canvas.WallHeight * (Properties[ray.blockType].layer2_height / 2) / distance );
+			Canvas.renderLinesList2[k]:SetHeight( (Canvas.WallHeight * Properties[ray.blockType].layer2_height) / distance ); 
+			
+			-- Z Depth --
+			Canvas.renderLinesList2[k]:SetFrameLevel(Canvas.GetZDepth(ray.distance) - 1);
+
+			-- UV Map --
+			Canvas.renderLinesList2[k].texture:SetTexCoord(ray.uvDistance, ray.uvDistance + (ray.uvDirection * ray.distanceCorrected/100), 1, 0);
+			
+			-- Shading --
+			if Properties[ray.blockType].color ~= nil then
+				local color = Properties[ray.blockType].color;
+				Canvas.renderLinesList2[k].texture:SetVertexColor(
+					color[1] * shading[1] * Canvas.ambientLight[1],
+					color[2] * shading[2] * Canvas.ambientLight[2],
+					color[3] * shading[3] * Canvas.ambientLight[3],
+					color[4]);
+			else
+				Canvas.renderLinesList2[k].texture:SetVertexColor(
+					shading[1] * Canvas.ambientLight[1],
+					shading[2] * Canvas.ambientLight[2],
+					shading[3] * Canvas.ambientLight[3],
+					1);
+			end
+
+			-- Texture --
+			Canvas.renderLinesList2[k].texture:SetTexture(Properties[ray.blockType].layer2_texture);
+		else
+			Canvas.renderLinesList2[k]:Hide();
+		end
+
 	end
 
 	-- floor
@@ -682,7 +752,6 @@ function Canvas.Render()
 	-- door
 	Canvas.DoorAnimation();
 end
-
 
 function Canvas.GetZDepth(distance)
 	local level = 500-(distance*5);
@@ -705,7 +774,6 @@ function Canvas.DistanceCulling()
 			--print (distance);
 		end
 	end
-
 end
 
 function Canvas.Walk()
@@ -734,41 +802,35 @@ end
 
 -- "tileset/expansion05/spiresofarrak/6sa_rock01_1024.blp"
 
-function RotateTexture(self, degrees)
-	local angle = math.rad(degrees)
-	local cos, sin = math.cos(angle), math.sin(angle)
-	self:SetTexCoord((sin - cos), -(cos + sin), -cos, -sin, sin, -cos, 0, 0)
-end
 
-
+local halfFoV, dirPlusFoV, dirMinusFoV, verticalFoV, halfVerticalFoV, verticalAngleIncrement, oppositeAngle, newOppositeAngle, distanceFromOrigin;
+local groundPosition = 0.6;
+local distanceToProjectionPlane = 0.2;
+local distModifier = distanceToProjectionPlane;
+local x1, y1, x2, y2, x3, y3, x4, y4;
 function Canvas.UpdateFloor()
+	halfFoV = Player.FoV/2;
+	dirPlusFoV = Player.Direction + halfFoV;
+	dirMinusFoV = Player.Direction - halfFoV;
+	verticalFoV = (Canvas.resolution.y / Canvas.resolution.x) * Player.FoV;
+	halfVerticalFoV = verticalFoV / 2;
+	verticalAngleIncrement = halfVerticalFoV / Canvas.groundVisLines;
+	oppositeAngle = 90 - halfVerticalFoV;
 
-	local halfFoV = Player.FoV/2;
-	local dirPlusFoV = Player.Direction + halfFoV;
-	local dirMinusFoV = Player.Direction - halfFoV;
+	for k = 1, 50, 1 do	
+		x1 = cos(dirPlusFoV) * distModifier + Player.Position.xCell;
+		y1 = sin(dirPlusFoV) * distModifier + Player.Position.yCell;
+		x3 = cos(dirMinusFoV) * distModifier + Player.Position.xCell;
+		y3 = sin(dirMinusFoV) * distModifier + Player.Position.yCell;
 
-	local floorSegment = 0.1;
-	local posModifier = 2;
-	local distModifier = 5;
-	for k = 1, 50, 1 do
-		--Canvas.Floor[k].texture:SetRotation(math.rad(Player.Direction));
+		newOppositeAngle = oppositeAngle + (k * verticalAngleIncrement);
+		distanceFromOrigin = tan(newOppositeAngle) * groundPosition;
+		distModifier = min((distanceFromOrigin - distanceToProjectionPlane),100);
 
-		--RotateTexture(Canvas.Floor[k].texture, Player.Direction);
-
-		
-		local x1 = cos(dirPlusFoV) * (floorSegment * distModifier) + (Player.Position.x/posModifier);
-		local y1 = sin(dirPlusFoV) * (floorSegment * distModifier) + (Player.Position.y/posModifier);
-		local x3 = cos(dirMinusFoV) * (floorSegment * distModifier) + (Player.Position.x/posModifier);
-		local y3 = sin(dirMinusFoV) * (floorSegment * distModifier) + (Player.Position.y/posModifier);
-		distModifier = distModifier + (math.sin(k/50))--k/50;
-
-		local x2 = cos(dirPlusFoV) * (floorSegment * distModifier) + (Player.Position.x/posModifier);
-		local y2 = sin(dirPlusFoV) * (floorSegment * distModifier ) + (Player.Position.y/posModifier);
-		local x4 = cos(dirMinusFoV) * (floorSegment * distModifier) + (Player.Position.x/posModifier);
-		local y4 = sin(dirMinusFoV) * (floorSegment * distModifier) + (Player.Position.y/posModifier);
-		--tex:SetTexCoord(ULx,ULy,LLx,LLy,URx,URy,LRx,LRy)
+		x2 = cos(dirPlusFoV) * distModifier + Player.Position.xCell;
+		y2 = sin(dirPlusFoV) * distModifier + Player.Position.yCell;
+		x4 = cos(dirMinusFoV) * distModifier + Player.Position.xCell;
+		y4 = sin(dirMinusFoV) * distModifier + Player.Position.yCell;
 		Canvas.Floor[k].texture:SetTexCoord(x2,y2,x1,y1,x4,y4,x3,y3);
-
 	end
-
 end

@@ -20,8 +20,8 @@ Map.Doors = {};
 -- enums --
 
 function Map.LoadData()
-	--Map.Data = WorgensteinMapData;
-	Map.Data = Data["Episode1Floor1"];
+	Map.Data = WorgensteinMapData; -- load saved variable instead
+	--Map.Data = Data["Episode1Floor1"];
 	WorgensteinMapData = Map.Data;
 end
 

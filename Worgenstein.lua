@@ -28,7 +28,6 @@ function WG.VariablesLoaded()
 	WorgensteinMapData = WorgensteinMapData or {};
 	Map.GenerateEmpty();
 	Map.LoadData();
-	--Map.Data = WorgensteinMapData;
 	Map.FillMissingData();
 	Map.LoadDoors();
 	Canvas.Create();

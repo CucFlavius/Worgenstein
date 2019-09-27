@@ -1,12 +1,15 @@
+------------------------------
+--			Globals			--
+------------------------------
 Zee = Zee or {};
 Zee.Worgenstein = Zee.Worgenstein or {};
+Zee.Worgenstein.Player = Zee.Worgenstein.Player or {};
+Zee.Worgenstein.Map = Zee.Worgenstein.Map or {};
+Zee.Worgenstein.MapEditor = Zee.Worgenstein.MapEditor or {}
 local WG = Zee.Worgenstein;
-WG.Player = WG.Player or {};
 local Player = WG.Player;
 local Graph = Zee.Graph;
-Zee.Worgenstein.Map = Zee.Worgenstein.Map or {};
 local Map = Zee.Worgenstein.Map;
-Zee.Worgenstein.MapEditor = Zee.Worgenstein.MapEditor or {}
 local MapEditor = Zee.Worgenstein.MapEditor;
 local Ray = Zee.Worgenstein.Raytracing;
 local DataType = Zee.Worgenstein.Map.DataType;
@@ -14,22 +17,30 @@ local Properties = Zee.Worgenstein.Map.DataTypeProperties;
 local Settings = Zee.Worgenstein.Settings;
 local Canvas = Zee.Worgenstein.Canvas;
 
-Player.FoV = 70;		-- Field of View in degrees
-Player.Direction = 30;	-- The start angle at which the player is looking in degrees
-Player.Position = {};	-- the player position table
-Player.Position.x = 0; -- player x start position on map
-Player.Position.y = 0; -- player y start position on map
-Player.turnSpeed = 1;
-Player.moveSpeed = 0.02;
+Player.Action = {};						-- the collection of player action booleans
+Player.Action.TurnLeft = false;			-- true if turn right key is pressed
+Player.Action.TurnRight = false;		-- true if turn right key is pressed
+Player.Action.MoveForward = false;		-- true if move forward key pressed
+Player.Action.MoveBackward = false;		-- true if move backward key is pressed
+Player.Action.StrafeLeft = false;		-- true if strafe left key is pressed
+Player.Action.StrafeRight = false;		-- true if strafe right key is pressed
 
-Player.Action = {};
-Player.Action.TurnLeft = false;
-Player.Action.TurnRight = false;
-Player.Action.MoveForward = false;
-Player.Action.MoveBackward = false;
-Player.Action.StrafeLeft = false;
-Player.Action.StrafeRight = false;
+----------------------------------
+--			Constants	 		--
+----------------------------------
+Player.FoV = 70;						-- Field of View in degrees
+Player.Direction = 30;					-- The start angle at which the player is looking in degrees
+Player.Position = {};					-- the player position table
+Player.Position.x = 0; 					-- player x start position on map
+Player.Position.y = 0; 					-- player y start position on map
+Player.Position.xCell = 0;				-- player x position relative to the current cell ( 0 to 1 )
+Player.Position.yCell = 0;				-- player y position relative to the current cell ( 0 to 1 )
+Player.turnSpeed = 1;					-- player turn speed
+Player.moveSpeed = 0.02;				-- player movement speed
 
+--------------------------------------
+--			Keyboard Input			--
+--------------------------------------
 Player.InputFrame = Player.InputFrame or CreateFrame("Frame","KeyboardListener",UIParent);
 Player.InputFrame:EnableKeyboard(true);
 Player.InputFrame:SetPropagateKeyboardInput(true);
@@ -111,26 +122,22 @@ function Player.Spawn()
 			if Map.Data[x][y] == DataType.StartPositionU then
 				Player.Position.x = x + 0.5;
 				Player.Position.y = y+ 0.5;
-				Player.Direction = 90;	
-				--print(x .. " " ..y);			
+				Player.Direction = 90;			
 			end
 			if Map.Data[x][y] == DataType.StartPositionR then
 				Player.Position.x = x+ 0.5;
 				Player.Position.y = y+ 0.5;
 				Player.Direction = 0;	
-				--print(x .. " " ..y);	
 			end
 			if Map.Data[x][y] == DataType.StartPositionD then
 				Player.Position.x = x+ 0.5;
 				Player.Position.y = y+ 0.5;	
 				Player.Direction = 90*3;
-				--print(x .. " " ..y);	
 			end
 			if Map.Data[x][y] == DataType.StartPositionL then
 				Player.Position.x = x+ 0.5;
 				Player.Position.y = y+ 0.5;
-				Player.Direction = 180;	
-				--print(x .. " " ..y);	
+				Player.Direction = 180;		
 			end
 		end
 	end
@@ -190,5 +197,9 @@ function Player.Movement()
 			Player.Position.y = yDestination;
 		end
 	end
+
+	-- update player cell position (relative to a cell)
+	Player.Position.xCell = Player.Position.x - math.floor(Player.Position.x);
+	Player.Position.yCell = Player.Position.y - math.floor(Player.Position.y);
 
 end

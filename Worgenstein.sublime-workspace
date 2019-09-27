@@ -4,6 +4,38 @@
 		"selected_items":
 		[
 			[
+				"fog",
+				"fogColor"
+			],
+			[
+				"distance",
+				"distanceCorrected"
+			],
+			[
+				"text",
+				"SetColorTexture"
+			],
+			[
+				"verti",
+				"verticalAngleIncrement"
+			],
+			[
+				"half",
+				"halfVerticalFoV"
+			],
+			[
+				"vertical",
+				"verticalFoV"
+			],
+			[
+				"Setver",
+				"SetVertexColor\t(r, g, b, [a])"
+			],
+			[
+				"Setro",
+				"SetRotation\t(radians)"
+			],
+			[
 				"BO",
 				"BOTTOM\t\"anchor\""
 			],
@@ -371,106 +403,16 @@
 			"file": "Canvas.lua",
 			"settings":
 			{
-				"buffer_size": 26530,
+				"buffer_size": 32137,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "WindowAPI/ScrollList.lua",
-			"settings":
-			{
-				"buffer_size": 2966,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Map.lua",
-			"settings":
-			{
-				"buffer_size": 3689,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Data.lua",
-			"settings":
-			{
-				"buffer_size": 15321,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Weapon.lua",
-			"settings":
-			{
-				"buffer_size": 3459,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Player.lua",
-			"settings":
-			{
-				"buffer_size": 6563,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Worgenstein.lua",
-			"settings":
-			{
-				"buffer_size": 4495,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "AI.lua",
-			"settings":
-			{
-				"buffer_size": 6605,
-				"encoding": "UTF-8",
-				"line_ending": "Windows",
-				"name": "--- enemy AI --"
 			}
 		},
 		{
 			"file": "DataTypeProperties.lua",
 			"settings":
 			{
-				"buffer_size": 13453,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "MapEditor.lua",
-			"settings":
-			{
-				"buffer_size": 14373,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Settings.lua",
-			"settings":
-			{
-				"buffer_size": 696,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Raytracing.lua",
-			"settings":
-			{
-				"buffer_size": 13910,
+				"buffer_size": 14012,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -508,31 +450,31 @@
 	},
 	"expanded_folders":
 	[
-		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein",
-		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/WindowAPI"
+		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein"
 	],
 	"file_history":
 	[
+		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/Raytracing.lua",
+		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/Settings.lua",
+		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/MapEditor.lua",
+		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/Worgenstein.lua",
+		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/Player.lua",
+		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/Weapon.lua",
+		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/Data.lua",
+		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/AI.lua",
+		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/Map.lua",
 		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/Debugger.lua",
 		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/WindowAPI/Window.lua",
 		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/DataTypeProperties.lua",
 		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/Worgenstein.toc",
-		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/Weapon.lua",
-		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/MapEditor.lua",
-		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/Map.lua",
-		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/Settings.lua",
-		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/Player.lua",
-		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/Worgenstein.lua",
 		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/DataTypeNames.lua",
 		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/DataType.lua",
 		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/WindowAPI/ImageBox.lua",
 		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/WindowAPI/ScrollList.lua",
-		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/Raytracing.lua",
 		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/DataNames.lua",
 		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/Minimap.lua",
 		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/LibGraph-2.0/LibGraph-2.0.lua",
 		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/Canvas.lua",
-		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/Data.lua",
 		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/Worgenstein/Libs/LibFiles.xml",
 		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/RareMaps/RareMaps.lua",
 		"/E/Games/World of Warcraft/_retail_/Interface/AddOns/RareMaps/Settings.lua",
@@ -607,6 +549,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"skyBox",
 			"debug",
 			"Hide()",
 			"HIde",
@@ -697,23 +640,24 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 26530,
+						"buffer_size": 32137,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								9531,
-								9531
+								1562,
+								1562
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/WoWDevelopment/WoW Lua.sublime-syntax"
+							"syntax": "Packages/WoWDevelopment/WoW Lua.sublime-syntax",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2976.0,
+						"translation.y": 89.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -721,221 +665,19 @@
 				},
 				{
 					"buffer": 1,
-					"file": "WindowAPI/ScrollList.lua",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 2966,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2757,
-								2693
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/WoWDevelopment/WoW Lua.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 399.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "Map.lua",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3689,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								764,
-								764
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/WoWDevelopment/WoW Lua.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 57.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "Data.lua",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 15321,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								171,
-								171
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/WoWDevelopment/WoW Lua.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 57.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "Weapon.lua",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3459,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								529,
-								529
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/WoWDevelopment/WoW Lua.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "Player.lua",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 6563,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								635,
-								644
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/WoWDevelopment/WoW Lua.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 285.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "Worgenstein.lua",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4495,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1287,
-								1301
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/WoWDevelopment/WoW Lua.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 285.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "AI.lua",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 6605,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2886,
-								2886
-							]
-						],
-						"settings":
-						{
-							"auto_name": "--- enemy AI --",
-							"syntax": "Packages/WoWDevelopment/WoW Lua.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 1254.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
 					"file": "DataTypeProperties.lua",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 13453,
+						"buffer_size": 14012,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								7375,
-								7375
+								1233,
+								1233
 							]
 						],
 						"settings":
@@ -944,95 +686,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 5448.0,
+						"translation.y": 315.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "MapEditor.lua",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 14373,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								14115,
-								14142
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/WoWDevelopment/WoW Lua.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 10,
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"file": "Settings.lua",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 696,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								695,
-								695
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/WoWDevelopment/WoW Lua.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 11,
-					"type": "text"
-				},
-				{
-					"buffer": 11,
-					"file": "Raytracing.lua",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 13910,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5630,
-								5630
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/WoWDevelopment/WoW Lua.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 2809.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
+					"stack_index": 1,
 					"type": "text"
 				}
 			]
@@ -1040,7 +697,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 28.0
+		"height": 24.0
 	},
 	"input":
 	{
@@ -1068,10 +725,10 @@
 			1.0
 		]
 	},
-	"menu_visible": true,
+	"menu_visible": false,
 	"output.exec":
 	{
-		"height": 107.0
+		"height": 109.0
 	},
 	"output.find_results":
 	{
@@ -1081,7 +738,7 @@
 	"project": "Worgenstein.sublime-project",
 	"replace":
 	{
-		"height": 52.0
+		"height": 44.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1115,11 +772,11 @@
 	"settings":
 	{
 	},
-	"show_minimap": true,
+	"show_minimap": false,
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 277.0,
+	"side_bar_width": 204.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
