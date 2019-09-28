@@ -3,11 +3,15 @@ local Properties = Zee.Worgenstein.Map.DataTypeProperties;
 local DataType = Zee.Worgenstein.Map.DataType;
 Zee.Worgenstein.Map.DataTypeProperties.SecondLayerType = {};
 local SecondLayerType = Zee.Worgenstein.Map.DataTypeProperties.SecondLayerType;
+Zee.Worgenstein.Textures = {};
+local Textures = Zee.Worgenstein.Textures;
+
 
 SecondLayerType.Off = 0;
 SecondLayerType.Indented = 1;
 SecondLayerType.OneLevelAbove = 2;
-SecondLayerType.OneLevelAboveIndented = 3;
+
+Textures.Tileset1 = "Interface\\AddOns\\Worgenstein\\GFX\\Tileset1.tga";
 
 
 --tileset/7.0/araknashal/data/7an_vrykulbones01_256.blp
@@ -28,29 +32,38 @@ Properties[DataType.Nothing] = { wall = false }
 ---------------
 ---- Walls ----
 ---------------
-Properties[DataType.GreyBrick1] = {	wall = true }
 
-
-Properties[DataType.GreyBrick2] = 
-{	
-wall = true,
-texture = 953619,
-layer2 = SecondLayerType.OneLevelAboveIndented,
-layer2_texture = 953628,
-layer2_indentation = 0.3,
-layer2_height = 4,
+Properties[DataType.DefaultWall] = 
+{
+wall = true
 }
 
-
-
-Properties[DataType.GreyBrick3] = 
+Properties[DataType.MansionExt_1] = 
 {	
 wall = true,
-texture = 953619,
-layer2 = SecondLayerType.OneLevelAboveIndented,
-layer2_texture = 953628,
-layer2_indentation = 0.3,
-layer2_height = 3
+texture = Textures.Tileset1,
+coords = {0, 0.125, 0.5, 0.625},
+coords_side = {0, 0.125, 0.5, 0.625},
+layer2 = SecondLayerType.OneLevelAbove,
+coords2 = {0, 0.125, 0, 0.5},
+coords2_side = {0, 0.125, 0.125, 0.5},
+layer2_texture = Textures.Tileset1,
+layer2_height = 4,
+layer2_height_side = 3
+}
+
+Properties[DataType.MansionExt_2] = 
+{	
+wall = true,
+texture = Textures.Tileset1,
+coords = {0, 0.125, 0.5, 0.625},
+coords_side = {0, 0.125, 0.5, 0.625},
+layer2 = SecondLayerType.OneLevelAbove,
+coords2 = {0.125, 0.25, 0, 0.5},
+coords2_side = {0, 0.125, 0.125, 0.5},
+layer2_texture = Textures.Tileset1,
+layer2_height = 4,
+layer2_height_side = 3
 }
 
 Properties[DataType.GreyBrick_Flag] = {	wall = true }

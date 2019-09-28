@@ -6,9 +6,9 @@ local DataType = Zee.Worgenstein.Map.DataType;
 
 -- Ground Data --
 DataType.Nothing = 0;
-DataType.GreyBrick1 = 1;
-DataType.GreyBrick2 = 2;
-DataType.GreyBrick3 = 3;
+DataType.DefaultWall = 1;
+DataType.MansionExt_1 = 2;
+DataType.MansionExt_2 = 3;
 DataType.GreyBrick_Flag = 4;
 DataType.GreyBrick_Worgenstein = 5;
 DataType.GreyBrick_Eagle = 6;

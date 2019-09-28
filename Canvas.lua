@@ -664,11 +664,24 @@ function Canvas.Render()
 		Canvas.renderLinesList[k]:SetFrameLevel(Canvas.GetZDepth(ray.distance));
 
 		-- UV Map --
-		if Properties[ray.blockType].wall == true then
-			Canvas.renderLinesList[k].texture:SetTexCoord(ray.uvDistance, ray.uvDistance + (ray.uvDirection * ray.distanceCorrected/100), 1, 0);
-		end
-		if Properties[ray.blockType].door == true then
-			Canvas.renderLinesList[k].texture:SetTexCoord(ray.uvDistance, ray.uvDistance + (ray.uvDirection * ray.distanceCorrected/100), 1, 0);
+		if Properties[ray.blockType].coords ~= nil then
+			if ray.edgeHit > 2 then	-- front edge
+				Canvas.renderLinesList[k].texture:SetTexCoord(
+					Properties[ray.blockType].coords[1] + ray.uvDistance*0.125,
+					Properties[ray.blockType].coords[1] + ray.uvDistance*0.125 + (ray.uvDirection * ray.distanceCorrected/100*0.125),
+					Properties[ray.blockType].coords[3],
+					Properties[ray.blockType].coords[4]
+					);
+			else -- side edge
+				Canvas.renderLinesList[k].texture:SetTexCoord(
+					Properties[ray.blockType].coords_side[1] + ray.uvDistance*0.125,
+					Properties[ray.blockType].coords_side[1] + ray.uvDistance*0.125 + (ray.uvDirection * ray.distanceCorrected/100*0.125),
+					Properties[ray.blockType].coords_side[3],
+					Properties[ray.blockType].coords_side[4]
+					);
+			end
+		else
+			Canvas.renderLinesList[k].texture:SetTexCoord(ray.uvDistance, ray.uvDistance + (ray.uvDirection * ray.distanceCorrected/100), 0, 1);
 		end
 
 		-- Shading --
@@ -708,18 +721,45 @@ function Canvas.Render()
 			if Properties[ray.blockType].layer2_height == nil then Properties[ray.blockType].layer2_height = 1; end
 			Canvas.renderLinesList2[k]:Show();
 			local distance = ray.distanceCorrected;
-			if Properties[ray.blockType].layer2 == SecondLayerType.Indented or Properties[ray.blockType].layer2 == SecondLayerType.OneLevelAboveIndented then
-				distance = ray.distanceCorrected + Properties[ray.blockType].layer2_indentation;
-			end
 
-			Canvas.renderLinesList2[k]:SetPoint("LEFT",(k * Canvas.renderDensity) - (Canvas.renderDensity/2) - 0.01, Canvas.WallHeight * (Properties[ray.blockType].layer2_height / 2) / distance );
-			Canvas.renderLinesList2[k]:SetHeight( (Canvas.WallHeight * Properties[ray.blockType].layer2_height) / distance ); 
+			local h = 1;
+			if Properties[ray.blockType].layer2_height ~= nil and Properties[ray.blockType].layer2_height_side ~= nil then
+				if ray.edgeHit > 2 then	-- front edge
+					h = Properties[ray.blockType].layer2_height;
+				else
+					h = Properties[ray.blockType].layer2_height_side;
+				end
+			end
+			Canvas.renderLinesList2[k]:SetPoint(
+				"LEFT",
+				(k * Canvas.renderDensity) - (Canvas.renderDensity/2) - 0.01,
+				(Canvas.WallHeight * (h / 2) + (Canvas.WallHeight / 2)) / distance
+			);
+			Canvas.renderLinesList2[k]:SetHeight( (Canvas.WallHeight * h) / distance ); 
 			
 			-- Z Depth --
 			Canvas.renderLinesList2[k]:SetFrameLevel(Canvas.GetZDepth(ray.distance) - 1);
 
 			-- UV Map --
-			Canvas.renderLinesList2[k].texture:SetTexCoord(ray.uvDistance, ray.uvDistance + (ray.uvDirection * ray.distanceCorrected/100), 1, 0);
+			if Properties[ray.blockType].coords2 ~= nil then
+				if ray.edgeHit > 2 then	-- front edge
+					Canvas.renderLinesList2[k].texture:SetTexCoord(
+						Properties[ray.blockType].coords2[1] + ray.uvDistance*0.125,
+						Properties[ray.blockType].coords2[1] + ray.uvDistance*0.125 + (ray.uvDirection * ray.distanceCorrected/100*0.125),
+						Properties[ray.blockType].coords2[3],
+						Properties[ray.blockType].coords2[4]
+						);
+				else -- side edge
+					Canvas.renderLinesList2[k].texture:SetTexCoord(
+						Properties[ray.blockType].coords2_side[1] + ray.uvDistance*0.125,
+						Properties[ray.blockType].coords2_side[1] + ray.uvDistance*0.125 + (ray.uvDirection * ray.distanceCorrected/100*0.125),
+						Properties[ray.blockType].coords2_side[3],
+						Properties[ray.blockType].coords2_side[4]
+						);
+				end
+			else
+				Canvas.renderLinesList2[k].texture:SetTexCoord(ray.uvDistance, ray.uvDistance + (ray.uvDirection * ray.distanceCorrected/100), 0, 1);
+			end
 			
 			-- Shading --
 			if Properties[ray.blockType].color ~= nil then

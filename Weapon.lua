@@ -92,9 +92,11 @@ function Weapon.Update()
 		Weapon.ResetWalk();
 	end
 
-	if Canvas.gunParticleFrame.timer <= 0 then
-		Canvas.gunParticleFrame:Hide();
-	else
-		Canvas.gunParticleFrame.timer = Canvas.gunParticleFrame.timer - 0.01;
+	if Canvas.gunParticleFrame ~= nil and Canvas.gunParticleFrame.timer ~= nil then
+		if Canvas.gunParticleFrame.timer <= 0 then
+			Canvas.gunParticleFrame:Hide();
+		else
+			Canvas.gunParticleFrame.timer = Canvas.gunParticleFrame.timer - 0.01;
+		end
 	end
 end

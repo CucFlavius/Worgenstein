@@ -267,7 +267,9 @@ function MapEditor.UpdatePlayer()
 	Zee.DrawLine(Player.FoVRightFrame, 0, 0, x2FoVR, y2FoVR, 20, {1,1,1,1}, "OVERLAY");
 
 	--Player.IconFrame:SetPoint("BOTTOMLEFT",Player.Position.x * WG.MapEditor.minimapCellSize+ (WG.MapEditor.minimapCellSize/2), Player.Position.y * WG.MapEditor.minimapCellSize + (WG.MapEditor.minimapCellSize/2));
-	Player.IconFrame:SetPoint("BOTTOMLEFT",Player.Position.x * (WG.MapEditor.minimapCellSize+1)+ (WG.MapEditor.minimapCellSize/2) - iconSizeX/2, Player.Position.y * (WG.MapEditor.minimapCellSize+1) + (WG.MapEditor.minimapCellSize/2) - iconSizeY/2);
+	if Player.IconFrame ~= nil then -- added because it sometimes isn't loaded yet
+		Player.IconFrame:SetPoint("BOTTOMLEFT",Player.Position.x * (WG.MapEditor.minimapCellSize+1)+ (WG.MapEditor.minimapCellSize/2) - iconSizeX/2, Player.Position.y * (WG.MapEditor.minimapCellSize+1) + (WG.MapEditor.minimapCellSize/2) - iconSizeY/2);
+	end
 end
 
 function Zee.DrawLine(C, sx, sy, ex, ey, w, color, layer)
@@ -320,12 +322,13 @@ function Zee.DrawLine(C, sx, sy, ex, ey, w, color, layer)
 	if BRx > 10000 then BRx = 10000 elseif BRx < -10000 then BRx = -10000 end
 	if BRy > 10000 then BRy = 10000 elseif BRy < -10000 then BRy = -10000 end
 
-	-- Set texture coordinates and anchors
-	C.texture:ClearAllPoints();
-	C.texture:SetTexCoord(TLx, TLy, BLx, BLy, TRx, TRy, BRx, BRy);
-	C.texture:SetPoint("BOTTOMLEFT", C, relPoint, cx - Bwid, cy - Bhgt);
-	C.texture:SetPoint("TOPRIGHT",   C, relPoint, cx + Bwid, cy + Bhgt);
+	if C ~= nil then
+		-- Set texture coordinates and anchors
+		C.texture:ClearAllPoints();
+		C.texture:SetTexCoord(TLx, TLy, BLx, BLy, TRx, TRy, BRx, BRy);
+		C.texture:SetPoint("BOTTOMLEFT", C, relPoint, cx - Bwid, cy - Bhgt);
+		C.texture:SetPoint("TOPRIGHT",   C, relPoint, cx + Bwid, cy + Bhgt);
 
-	C:Show()
-	--return T
+		C:Show()
+	end
 end

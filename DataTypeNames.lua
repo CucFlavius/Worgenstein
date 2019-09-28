@@ -1,9 +1,9 @@
 Zee.Worgenstein.Map.DataTypeNames = Zee.Worgenstein.Map.DataTypeNames or {};
 Zee.Worgenstein.Map.DataTypeNames = {
 	"Nothing - 0",
-	"GreyBrick1 - 1",
-	"GreyBrick2 - 2",
-	"GreyBrick3 - 3",
+	"DefaultWall - 1",
+	"Mansion Exterior 1 - 2",
+	"Mansion Exterior 2 - 3",
 	"GreyBrick_Flag - 4",
 	"GreyBrick_Worgenstein - 5",
 	"GreyBrick_Eagle - 6",
