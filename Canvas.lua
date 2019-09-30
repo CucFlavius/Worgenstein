@@ -12,6 +12,7 @@ local Settings = Zee.Worgenstein.Settings;
 local Properties = Zee.Worgenstein.Map.DataTypeProperties;
 local BlockName = Zee.Worgenstein.Map.DataTypeNames;
 local SecondLayerType = Zee.Worgenstein.Map.DataTypeProperties.SecondLayerType;
+local Textures = Zee.Worgenstein.Textures;
 
 -- Properties --
 Canvas.resolution = {};
@@ -25,6 +26,7 @@ Canvas.renderLines = Canvas.resolution.x / Canvas.renderDensity;
 Canvas.HUDBarHeight = 100;
 Canvas.renderLinesList = {};		-- first layer wall render lines
 Canvas.renderLinesList2 = {};		-- second layer wall render lines
+Canvas.renderLinesList3 = {};		-- third layer wall render lines
 --Canvas.renderLinesGroundList = {};
 Canvas.spriteList = {};
 Canvas.spriteFrameList = {};
@@ -37,7 +39,7 @@ Canvas.currentDoorAnimation = nil;
 Canvas.animatingDoor = false;
 Canvas.openDoor = nil;
 Canvas.doorCoords = {};
-Canvas.ambientLight = { 0.8, 0.8, 1 };
+Canvas.ambientLight = { 1, 1, 1 };
 Canvas.fogColor = { 1, 1, 1 }; -- reverse rgb values (1,1,1) = black
 Canvas.fogDistance = 15;
 
@@ -175,6 +177,21 @@ function Canvas.Create()
 		Canvas.renderLinesList2[k] = Canvas.renderLine2;
 	end	
 
+	-- create the wall frames layer 3
+	for k = 1, Canvas.renderLines, 1 do
+		Canvas.renderLine3 = CreateFrame("Frame",nil,Canvas.renderFrame);
+		Canvas.renderLine3:SetFrameStrata("BACKGROUND");
+		Canvas.renderLine3:SetWidth(Canvas.renderDensity) -- Set these to whatever height/width is needed 
+		Canvas.renderLine3:SetHeight(10) -- for your Texture
+		Canvas.renderLine3.texture = Canvas.renderLine3:CreateTexture(nil,"BACKGROUND")
+		Canvas.renderLine3.texture:SetTexture("tileset/expansion05/spiresofarrak/6sa_rock01_1024.blp",false);
+		Canvas.renderLine3.texture:SetAllPoints(Canvas.renderLine3);
+		Canvas.renderLine3:SetPoint("LEFT",(k * Canvas.renderDensity) - (Canvas.renderDensity/2) - 0.01, 0);
+		Canvas.renderLine3:Show();
+		Canvas.renderLine3:SetFrameLevel(16);	
+		Canvas.renderLinesList3[k] = Canvas.renderLine3;
+	end	
+
 	-- create HUD frame
 	Canvas.HUDFrame = CreateFrame("Frame",nil,Canvas.mainFrame);
 	Canvas.HUDFrame:SetFrameStrata("MEDIUM");
@@ -212,11 +229,11 @@ function Canvas.CreateFloor()
 		Canvas.Floor[k]:SetWidth(Canvas.resolution.x) -- Set these to whatever height/width is needed 
 		Canvas.Floor[k]:SetHeight(5) -- for your Texture
 		Canvas.Floor[k].texture = Canvas.Floor[k]:CreateTexture(nil,"BACKGROUND")
-		Canvas.Floor[k].texture:SetTexture(852895,"REPEAT", "REPEAT");
+		Canvas.Floor[k].texture:SetTexture(Textures.Ground1,"REPEAT", "REPEAT");
 		Canvas.Floor[k].texture:SetTexCoord(0, 1, k * 0.02, k * 0.02 - 0.02)
 		Canvas.Floor[k].texture:SetAllPoints(Canvas.Floor[k]);
 		Canvas.Floor[k]:SetPoint("BOTTOM", 0, (k * 5) - 5);
-		local vertexColor = 1 - (k/Canvas.groundVisLines);
+		local vertexColor = 1 - (k/Canvas.groundVisLines - 0.1);
 		Canvas.Floor[k].texture:SetVertexColor(vertexColor * Canvas.ambientLight[1], vertexColor* Canvas.ambientLight[2], vertexColor* Canvas.ambientLight[3]);
 		Canvas.Floor[k]:Show();
 		Canvas.Floor[k]:SetFrameLevel(16);	
@@ -646,13 +663,16 @@ end
 
 -- Update the Canvas elements in real time --
 function Canvas.Render()
-
-	Canvas.skyBox:SetRotation(math.rad(-Player.Direction));
+	if Canvas.skyBox ~= nil then
+		Canvas.skyBox:SetRotation(math.rad(-Player.Direction));
+	end
 	--Canvas.skyBox:SetPitch(math.rad(90));
 	local previousHeight = 0;
 	for k = 1, Canvas.renderLines, 1 do
 		local direction = (Player.Direction + (Player.FoV/2)) - (k * Canvas.rayAngle);
 		local ray = Ray.Cast(k, Player.Position.x, Player.Position.y, direction, 1000);
+		local uv_direction = Properties[ray.blockType].uv_direction;
+		local uv2_direction = Properties[ray.blockType].uv2_direction;
 		if Canvas.WallHeight / ray.distanceCorrected > 1 then
 			Canvas.renderLinesList[k]:SetHeight( Canvas.WallHeight / ray.distanceCorrected); 
 			previousHeight = ray.distanceCorrected;
@@ -665,21 +685,21 @@ function Canvas.Render()
 
 		-- UV Map --
 		if Properties[ray.blockType].coords ~= nil then
-			if ray.edgeHit > 2 then	-- front edge
-				Canvas.renderLinesList[k].texture:SetTexCoord(
-					Properties[ray.blockType].coords[1] + ray.uvDistance*0.125,
-					Properties[ray.blockType].coords[1] + ray.uvDistance*0.125 + (ray.uvDirection * ray.distanceCorrected/100*0.125),
-					Properties[ray.blockType].coords[3],
-					Properties[ray.blockType].coords[4]
-					);
-			else -- side edge
-				Canvas.renderLinesList[k].texture:SetTexCoord(
-					Properties[ray.blockType].coords_side[1] + ray.uvDistance*0.125,
-					Properties[ray.blockType].coords_side[1] + ray.uvDistance*0.125 + (ray.uvDirection * ray.distanceCorrected/100*0.125),
-					Properties[ray.blockType].coords_side[3],
-					Properties[ray.blockType].coords_side[4]
-					);
-			end
+				if ray.edgeHit > 2 then	-- front edge
+					Canvas.renderLinesList[k].texture:SetTexCoord(
+						Properties[ray.blockType].coords[1] + ray.uvDistance * 0.125 * uv_direction,
+						Properties[ray.blockType].coords[1] + ray.uvDistance * 0.125 * uv_direction + (ray.uvDirection * ray.distanceCorrected / 100 * 0.125 * uv_direction),
+						Properties[ray.blockType].coords[3],
+						Properties[ray.blockType].coords[4]
+						);
+				else -- side edge
+					Canvas.renderLinesList[k].texture:SetTexCoord(
+						Properties[ray.blockType].coords_side[1] + ray.uvDistance * 0.125 * uv_direction,
+						Properties[ray.blockType].coords_side[1] + ray.uvDistance * 0.125 * uv_direction + (ray.uvDirection * ray.distanceCorrected / 100 * 0.125 * uv_direction),
+						Properties[ray.blockType].coords_side[3],
+						Properties[ray.blockType].coords_side[4]
+						);
+				end
 		else
 			Canvas.renderLinesList[k].texture:SetTexCoord(ray.uvDistance, ray.uvDistance + (ray.uvDirection * ray.distanceCorrected/100), 0, 1);
 		end
@@ -716,7 +736,7 @@ function Canvas.Render()
 			Canvas.renderLinesList[k].texture:SetColorTexture(0,1,0);
 		end
 
-		-- Second Layer --
+		-- Second Layer - tall buildings --
 		if Properties[ray.blockType].layer2 ~= SecondLayerType.Off then
 			if Properties[ray.blockType].layer2_height == nil then Properties[ray.blockType].layer2_height = 1; end
 			Canvas.renderLinesList2[k]:Show();
@@ -744,15 +764,15 @@ function Canvas.Render()
 			if Properties[ray.blockType].coords2 ~= nil then
 				if ray.edgeHit > 2 then	-- front edge
 					Canvas.renderLinesList2[k].texture:SetTexCoord(
-						Properties[ray.blockType].coords2[1] + ray.uvDistance*0.125,
-						Properties[ray.blockType].coords2[1] + ray.uvDistance*0.125 + (ray.uvDirection * ray.distanceCorrected/100*0.125),
+						Properties[ray.blockType].coords2[1] + ray.uvDistance * 0.125* uv2_direction,
+						Properties[ray.blockType].coords2[1] + ray.uvDistance * 0.125* uv2_direction + (ray.uvDirection * ray.distanceCorrected / 100 * 0.125* uv2_direction),
 						Properties[ray.blockType].coords2[3],
 						Properties[ray.blockType].coords2[4]
 						);
 				else -- side edge
 					Canvas.renderLinesList2[k].texture:SetTexCoord(
-						Properties[ray.blockType].coords2_side[1] + ray.uvDistance*0.125,
-						Properties[ray.blockType].coords2_side[1] + ray.uvDistance*0.125 + (ray.uvDirection * ray.distanceCorrected/100*0.125),
+						Properties[ray.blockType].coords2_side[1] + ray.uvDistance * 0.125 * uv2_direction,
+						Properties[ray.blockType].coords2_side[1] + ray.uvDistance * 0.125 * uv2_direction + (ray.uvDirection * ray.distanceCorrected / 100 * 0.125 * uv2_direction),
 						Properties[ray.blockType].coords2_side[3],
 						Properties[ray.blockType].coords2_side[4]
 						);
@@ -783,6 +803,74 @@ function Canvas.Render()
 			Canvas.renderLinesList2[k]:Hide();
 		end
 
+		-- Third Layer - passthrough walls --
+		if ray.passthrough == true then
+			local uv3_direction = Properties[ray.blockType2].uv_direction;
+			Canvas.renderLinesList3[k]:Show();
+			if Canvas.WallHeight / ray.distanceCorrected2 > 1 then
+				Canvas.renderLinesList3[k]:SetHeight( Canvas.WallHeight / ray.distanceCorrected2); 
+				previousHeight = ray.distanceCorrected2;
+			else
+				Canvas.renderLinesList3[k]:SetHeight( Canvas.WallHeight / previousHeight); 
+			end
+
+			-- Z Depth --
+			Canvas.renderLinesList3[k]:SetFrameLevel(Canvas.GetZDepth(ray.distance2));
+
+			-- UV Map --
+			if Properties[ray.blockType2].coords ~= nil then
+					if ray.edgeHit2 > 2 then	-- front edge
+						Canvas.renderLinesList3[k].texture:SetTexCoord(
+							Properties[ray.blockType2].coords[1] + ray.uvDistance2 * 0.125 * uv3_direction,
+							Properties[ray.blockType2].coords[1] + ray.uvDistance2 * 0.125 * uv3_direction + (ray.uvDirection2 * ray.distanceCorrected2 / 100 * 0.125 * uv3_direction),
+							Properties[ray.blockType2].coords[3],
+							Properties[ray.blockType2].coords[4]
+							);
+					else -- side edge
+						Canvas.renderLinesList3[k].texture:SetTexCoord(
+							Properties[ray.blockType2].coords_side[1] + ray.uvDistance2 * 0.125 * uv3_direction,
+							Properties[ray.blockType2].coords_side[1] + ray.uvDistance2 * 0.125 * uv3_direction + (ray.uvDirection2 * ray.distanceCorrected2 / 100 * 0.125 * uv3_direction),
+							Properties[ray.blockType2].coords_side[3],
+							Properties[ray.blockType2].coords_side[4]
+							);
+					end
+			else
+				Canvas.renderLinesList3[k].texture:SetTexCoord(ray.uvDistance2, ray.uvDistance2 + (ray.uvDirection2 * ray.distanceCorrected2/100), 0, 1);
+			end
+
+			-- Shading --
+			local distanceFogValue = 1 - (ray.distance2/Canvas.fogDistance);
+			if ray.edgeHit2 <= 2 then	-- hit side edge
+				local darken = 0.7;
+				distanceFogValue = distanceFogValue*darken;
+			end
+			local shading = { max(distanceFogValue, 1-Canvas.fogColor[1]), max(distanceFogValue, 1-Canvas.fogColor[2]), max(distanceFogValue, 1-Canvas.fogColor[3]) };
+
+			if Properties[ray.blockType2].color ~= nil then
+				local color = Properties[ray.blockType2].color;
+				Canvas.renderLinesList3[k].texture:SetVertexColor(
+					color[1] * shading[1] * Canvas.ambientLight[1],
+					color[2] * shading[2] * Canvas.ambientLight[2],
+					color[3] * shading[3] * Canvas.ambientLight[3],
+					color[4]);
+			else
+				Canvas.renderLinesList3[k].texture:SetVertexColor(
+					shading[1] * Canvas.ambientLight[1],
+					shading[2] * Canvas.ambientLight[2],
+					shading[3] * Canvas.ambientLight[3],
+					1);
+			end
+
+			-- Texture --
+			if Properties[ray.blockType2].texture ~= nil then
+				Canvas.renderLinesList3[k].texture:SetTexture(Properties[ray.blockType2].texture);
+			else
+				Canvas.renderLinesList3[k].texture:SetColorTexture(0,1,0);
+			end			
+
+		else
+			Canvas.renderLinesList3[k]:Hide()
+		end
 	end
 
 	-- floor

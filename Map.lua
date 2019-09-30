@@ -159,7 +159,7 @@ function Map.LoadDoors()
 		for y = 0, Map.size, 1 do
 			local blockType = Map.Data[x][y]
 			if Property[blockType] ~= nil then
-				if Property[blockType].door == true then
+				if Property[blockType].door ~= nil then
 					Map.Doors[x][y] = 1;
 				else
 					Map.Doors[x][y] = -1;

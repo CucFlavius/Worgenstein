@@ -15,7 +15,7 @@ local Settings = Zee.Worgenstein.Settings;
 local MapEditor = Zee.Worgenstein.MapEditor;
 local Properties = Zee.Worgenstein.Map.DataTypeProperties;
 local AI = Zee.Worgenstein.AI;
---local testIncrementValue = 0;
+Zee.Worgenstein.Loaded = false;
 WG.timeSinceLastUpdate = 0;
 ------------------------------
 --	Start					--
@@ -39,6 +39,7 @@ function WG.VariablesLoaded()
 	Canvas.Render();
 	Canvas.CreateGunFrame();
 	AI.Initialize();
+	Zee.Worgenstein.Loaded = true;
 end
 
 function WG.AddonLoaded()
@@ -147,7 +148,7 @@ end
 function WG.OnUpdate(self, elapsed)
 	WG.timeSinceLastUpdate = WG.timeSinceLastUpdate + elapsed; 	
 	while (WG.timeSinceLastUpdate > Settings.UPDATE_INTERVAL) do
-		if Settings.RunUpdateLoop == true then
+		if Settings.RunUpdateLoop == true and Zee.Worgenstein.Loaded == true then
 			WG.UpdateLoop();
 		end
 		WG.timeSinceLastUpdate = WG.timeSinceLastUpdate - Settings.UPDATE_INTERVAL;
