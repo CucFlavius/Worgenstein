@@ -7,7 +7,7 @@ Zee.Worgenstein.Map = Zee.Worgenstein.Map or {};
 local Map = Zee.Worgenstein.Map;
 Zee.Worgenstein.MapEditor = Zee.Worgenstein.MapEditor or {}
 local MapEditor = Zee.Worgenstein.MapEditor;
-local Ray = Zee.Worgenstein.Raytracing;
+local Ray = Zee.Worgenstein.Raycasting;
 Map.DataType = Map.DataType or {};
 Map.Orientation = Map.Orientation or {};
 local DataType = Map.DataType;
@@ -17,7 +17,7 @@ local DataTypeNames = Zee.Worgenstein.Map.DataTypeNames;
 local Win = Zee.WindowAPI;
 local Properties = Zee.Worgenstein.Map.DataTypeProperties;
 
-MapEditor.minimapCellSize = 10;
+MapEditor.minimapCellSize = 20;
 MapEditor.minimapBlocks = {};
 MapEditor.selectedTab = nil;
 
@@ -104,7 +104,7 @@ function MapEditor.CreateToolbox ()
 	MapEditor.ToolboxFrame = CreateFrame("Frame",nil,MapEditor.MinimapFrame)
 	MapEditor.ToolboxFrame:SetFrameStrata("BACKGROUND")
 	MapEditor.ToolboxFrame:SetWidth(250); -- Set these to whatever height/width is needed 
-	MapEditor.ToolboxFrame:SetHeight(720);-- for your Texture
+	MapEditor.ToolboxFrame:SetHeight(550);-- for your Texture
 	MapEditor.ToolboxFrame.texture = MapEditor.ToolboxFrame:CreateTexture(nil,"BACKGROUND")
 	MapEditor.ToolboxFrame.texture:SetColorTexture(0.1,0.1,0.1,1);
 	MapEditor.ToolboxFrame.texture:SetAllPoints(MapEditor.ToolboxFrame)

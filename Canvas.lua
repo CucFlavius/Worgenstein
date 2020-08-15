@@ -6,7 +6,7 @@ local Canvas = Zee.Worgenstein.Canvas;
 local WG = Zee.Worgenstein;
 local Map = Zee.Worgenstein.Map;
 local Player = WG.Player;
-local Ray = Zee.Worgenstein.Raytracing;
+local Ray = Zee.Worgenstein.Raycasting;
 local DataType = Map.DataType;
 local Settings = Zee.Worgenstein.Settings;
 local Properties = Zee.Worgenstein.Map.DataTypeProperties;
@@ -18,6 +18,7 @@ local Textures = Zee.Worgenstein.Textures;
 Canvas.resolution = {};
 Canvas.resolution.x = 640;
 Canvas.resolution.y = 480;
+Canvas.scale = 1.6;
 Canvas.renderDensity = 4;
 Canvas.groundVisLines = 50;
 Canvas.renderDensityGround = 8;
@@ -106,10 +107,11 @@ function Canvas.Create()
 	Canvas.mainFrame.texture = Canvas.mainFrame:CreateTexture(nil,"BACKGROUND")
 	Canvas.mainFrame.texture:SetColorTexture(0,0,0,1);
 	Canvas.mainFrame.texture:SetAllPoints(Canvas.mainFrame)
-	Canvas.mainFrame:SetPoint("CENTER",-Map.size*8,0);
+	Canvas.mainFrame:SetPoint("LEFT",0,0);
 	Canvas.mainFrame:Show();
 	Canvas.mainFrame:SetFrameLevel(8);
 	Canvas.mainFrame:SetClipsChildren(true);
+	Canvas.mainFrame:SetScale(Canvas.scale);
 
 	-- skybox
 	Canvas.skyBox = CreateFrame("PlayerModel",nil,Canvas.mainFrame);

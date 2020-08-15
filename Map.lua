@@ -7,8 +7,8 @@ Zee.Worgenstein.Map = Zee.Worgenstein.Map or {};
 local Map = Zee.Worgenstein.Map;
 Zee.Worgenstein.MapEditor = Zee.Worgenstein.MapEditor or {}
 local MapEditor = Zee.Worgenstein.MapEditor;
-local Ray = Zee.Worgenstein.Raytracing;
-Map.size = 64;
+local Ray = Zee.Worgenstein.Raycasting;
+Map.size = 16;
 Map.diagonal = Map.size * math.sqrt(2);
 Map.DataType = Map.DataType or {};
 Map.Orientation = Map.Orientation or {};
@@ -109,7 +109,6 @@ function Map.GenerateEmpty()
 		for y = 0, Map.size, 1 do
 			Map.Data[x][y] = {};
 			Map.Data[x][y] = DataType.Nothing;
-			--Map.Data[x][y].property = 0;
 		end
 	end
 end
@@ -120,7 +119,6 @@ function Map.FillMissingData()
 			if Map.Data[x][y] == nil then
 				Map.Data[x][y] = {};
 				Map.Data[x][y] = DataType.GreyBrick1;
-				--Map.Data[x][y].property = 0;
 			end
 		end
 	end
@@ -144,7 +142,6 @@ function Map.Fill()
 			for y = 0, Map.size, 1 do
 				Map.Data[x][y] = {};
 				Map.Data[x][y] = MapEditor.selectedTab - 1;
-				--Map.Data[x][y].property = 0;
 			end
 		end
 	end
