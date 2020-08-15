@@ -1,13 +1,8 @@
-Zee.Worgenstein.Map.DataTypeProperties = Zee.Worgenstein.Map.DataTypeProperties or {};
 local Properties = Zee.Worgenstein.Map.DataTypeProperties;
 local DataType = Zee.Worgenstein.Map.DataType;
-Properties.SecondLayerType = {};
 local SecondLayerType = Zee.Worgenstein.Map.DataTypeProperties.SecondLayerType;
-Zee.Worgenstein.Textures = {};
 local Textures = Zee.Worgenstein.Textures;
-Properties.Direction = {};
 local Direction = Properties.Direction;
-
 
 SecondLayerType.Off = 0;
 SecondLayerType.Indented = 1;

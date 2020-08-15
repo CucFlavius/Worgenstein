@@ -1,11 +1,6 @@
 --------------------------------------------------------------------------------------
---	Settings Lua																		--
+--	Settings Lua																    --
 --------------------------------------------------------------------------------------
-
-Zee = Zee or {};
-Zee.Worgenstein = Zee.Worgenstein or {};
-Zee.Worgenstein.Settings = Zee.Worgenstein.Settings or {};
-local WG = Zee.Worgenstein;
 local Settings = Zee.Worgenstein.Settings;
 
 Settings.UPDATE_INTERVAL = 0.01;

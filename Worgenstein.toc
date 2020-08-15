@@ -11,17 +11,21 @@
 ## Version: 1.0
 
 WindowAPI\WindowAPIFiles.xml
-DataType.lua
-DataTypeNames.lua
-DataTypeProperties.lua
+Initialize.lua
+Data\DataType.lua
+Data\DataTypeNames.lua
+Data\DataTypeProperties.lua
 Debugger.lua
-Raycasting.lua
-Canvas.lua
+Math\Raycasting.lua
+Rendering\Canvas.lua
+Rendering\Ground.lua
+Rendering\Door.lua
+Rendering\Sprites.lua
+Rendering\Weapon.lua
 Map.lua
 MapEditor.lua
-Data.lua
+Data\Data.lua
 Player.lua
-Weapon.lua
 AI.lua
 Settings.lua
 Worgenstein.lua

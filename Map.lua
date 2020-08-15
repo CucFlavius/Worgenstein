@@ -1,20 +1,15 @@
-Zee = Zee or {};
-Zee.Worgenstein = Zee.Worgenstein or {};
-local WG = Zee.Worgenstein;
-Zee.Worgenstein.Data = Zee.Worgenstein.Data or {};
 local Data = Zee.Worgenstein.Data;
-Zee.Worgenstein.Map = Zee.Worgenstein.Map or {};
 local Map = Zee.Worgenstein.Map;
-Zee.Worgenstein.MapEditor = Zee.Worgenstein.MapEditor or {}
 local MapEditor = Zee.Worgenstein.MapEditor;
 local Ray = Zee.Worgenstein.Raycasting;
+local DataType = Map.DataType;
+local Property = Map.DataTypeProperties;
+local Orientation = Map.Orientation;
+
 Map.size = 16;
 Map.diagonal = Map.size * math.sqrt(2);
 Map.DataType = Map.DataType or {};
 Map.Orientation = Map.Orientation or {};
-local DataType = Map.DataType;
-local Property = Map.DataTypeProperties;
-local Orientation = Map.Orientation;
 Map.Doors = {};
 
 -- enums --

@@ -1,11 +1,6 @@
 --------------------------------------------------
 -- Worgenstein Debugger							--
 --------------------------------------------------
-
-
-Zee = Zee or {};
-Zee.Worgenstein = Zee.Worgenstein or {};
-Zee.Worgenstein.Debugger = Zee.Worgenstein.Debugger or {}
 local Debugger = Zee.Worgenstein.Debugger;
 local Win = Zee.WindowAPI;
 

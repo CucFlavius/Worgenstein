@@ -1,12 +1,9 @@
 --------------------------------------------------------------------------------------
 --	Main Lua																		--
 --------------------------------------------------------------------------------------
-
-Zee = Zee or {};
-Zee.Worgenstein = Zee.Worgenstein or {};
 local WG = Zee.Worgenstein;
 local Map = Zee.Worgenstein.Map;
-local Player = WG.Player;
+local Player = Zee.Worgenstein.Player;
 local Ray = Zee.Worgenstein.Raycasting;
 local Canvas = Zee.Worgenstein.Canvas;
 local Weapon = Zee.Worgenstein.Weapon;
@@ -14,9 +11,11 @@ local DataType = Map.DataType;
 local Settings = Zee.Worgenstein.Settings;
 local MapEditor = Zee.Worgenstein.MapEditor;
 local Properties = Zee.Worgenstein.Map.DataTypeProperties;
+local Sprites = Zee.Worgenstein.Sprites;
+local Weapon = Zee.Worgenstein.Weapon;
 local AI = Zee.Worgenstein.AI;
 Zee.Worgenstein.Loaded = false;
-WG.timeSinceLastUpdate = 0;
+Zee.Worgenstein.timeSinceLastUpdate = 0;
 ------------------------------
 --	Start					--
 ------------------------------
@@ -31,13 +30,13 @@ function WG.VariablesLoaded()
 	Map.FillMissingData();
 	Map.LoadDoors();
 	Canvas.Create();
-	Canvas.CreateSpriteFrames();
+	Sprites.CreateSpriteFrames();
 	Ray.Cast(0, Player.Position.x, Player.Position.y, Player.Direction, Map.size * math.sqrt(2));
 	Ray.MinimapHighlightBoxesHit();
 	MapEditor.Initialize();
 	Player.Spawn();
 	Canvas.Render();
-	Canvas.CreateGunFrame();
+	Weapon.CreateGunFrame();
 	AI.Initialize();
 	Zee.Worgenstein.Loaded = true;
 end
@@ -85,7 +84,7 @@ function WG.UpdateLoop ()
 	Weapon.Update();
 	MapEditor.UpdatePlayer();
 	Canvas.Render();
-	Canvas.UpdateSprites();
+	Sprites.UpdateSprites();
 	--Canvas.DistanceCulling();
 	AI.Update();
 end
@@ -126,7 +125,7 @@ function WG.CheckCollision(x,y)
 
 	-- enemies
 	for e = 1, AI.totalAliveEnemies, 1 do
-		local sprite = Canvas.spriteList[AI.AliveEnemySprites[e]];
+		local sprite = Sprites.spriteList[AI.AliveEnemySprites[e]];
 		if floor(x) == sprite.x and floor(y) == sprite.y then
 			return true;
 		end

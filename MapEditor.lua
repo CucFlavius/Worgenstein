@@ -1,18 +1,10 @@
-Zee = Zee or {};
-Zee.Worgenstein = Zee.Worgenstein or {};
-local WG = Zee.Worgenstein;
-Zee.Worgenstein.Data = Zee.Worgenstein.Data or {};
 local Data = Zee.Worgenstein.Data;
-Zee.Worgenstein.Map = Zee.Worgenstein.Map or {};
 local Map = Zee.Worgenstein.Map;
-Zee.Worgenstein.MapEditor = Zee.Worgenstein.MapEditor or {}
 local MapEditor = Zee.Worgenstein.MapEditor;
 local Ray = Zee.Worgenstein.Raycasting;
-Map.DataType = Map.DataType or {};
-Map.Orientation = Map.Orientation or {};
 local DataType = Map.DataType;
 local Orientation = Map.Orientation;
-local Player = WG.Player;
+local Player = Zee.Worgenstein.Player;
 local DataTypeNames = Zee.Worgenstein.Map.DataTypeNames;
 local Win = Zee.WindowAPI;
 local Properties = Zee.Worgenstein.Map.DataTypeProperties;
@@ -167,20 +159,20 @@ function MapEditor.DrawPlayer()
 
 
 	-- Player Icon
-	Player.IconFrame = CreateFrame("Frame",nil,WG.MapEditor.MinimapFrame)
+	Player.IconFrame = CreateFrame("Frame",nil,MapEditor.MinimapFrame)
 	Player.IconFrame:SetFrameStrata("BACKGROUND")
 	Player.IconFrame:SetWidth(iconSizeX) -- Set these to whatever height/width is needed 
 	Player.IconFrame:SetHeight(iconSizeY) -- for your Texture
 	local t = Player.IconFrame:CreateTexture(nil,"BACKGROUND")
 	t:SetColorTexture(1,1,1,1);
 	Player.IconFrame.texture = t
-	Player.IconFrame:SetPoint("BOTTOMLEFT",Player.Position.x * (WG.MapEditor.minimapCellSize+1)+ (WG.MapEditor.minimapCellSize/2) + 5.01, Player.Position.y * (WG.MapEditor.minimapCellSize+1) + (WG.MapEditor.minimapCellSize/2)+ 5.01);
+	Player.IconFrame:SetPoint("BOTTOMLEFT",Player.Position.x * (MapEditor.minimapCellSize+1)+ (MapEditor.minimapCellSize/2) + 5.01, Player.Position.y * (MapEditor.minimapCellSize+1) + (MapEditor.minimapCellSize/2)+ 5.01);
 	Player.IconFrame:SetFrameLevel(15);
 	t:SetAllPoints(Player.IconFrame);
 	Player.IconFrame:Show();
 
 	-- Player HitPoint
-	Player.HitPoint = CreateFrame("Frame",nil,WG.MapEditor.MinimapFrame)
+	Player.HitPoint = CreateFrame("Frame",nil,MapEditor.MinimapFrame)
 	Player.HitPoint:SetFrameStrata("BACKGROUND")
 	Player.HitPoint:SetWidth(iconSizeX) -- Set these to whatever height/width is needed 
 	Player.HitPoint:SetHeight(iconSizeY) -- for your Texture
@@ -240,12 +232,12 @@ function MapEditor.DrawPlayer()
 	Zee.DrawLine(Player.FoVLeftFrame, 0, 0, x2, y2, 20, {1,1,1,1}, "OVERLAY");
 
 	-- Enemy Line of Sight
-	Player.EnemyLoSFrame = CreateFrame("Frame",nil,WG.MapEditor.MinimapFrame)
+	Player.EnemyLoSFrame = CreateFrame("Frame",nil,MapEditor.MinimapFrame)
 	Player.EnemyLoSFrame:SetFrameStrata("BACKGROUND")
 	Player.EnemyLoSFrame:SetWidth(100) -- Set these to whatever height/width is needed 
 	Player.EnemyLoSFrame:SetHeight(100) -- for your Texture
 	Player.EnemyLoSFrame:SetFrameLevel(15);
-	Player.EnemyLoSFrame:SetPoint("BOTTOMLEFT", WG.MapEditor.MinimapFrame, "CENTER",0, 0);
+	Player.EnemyLoSFrame:SetPoint("BOTTOMLEFT", MapEditor.MinimapFrame, "CENTER",0, 0);
 	Player.EnemyLoSFrame.texture = Player.EnemyLoSFrame:CreateTexture(nil, "BACKGROUND")
 	Player.EnemyLoSFrame.texture:SetTexture("Interface\\AddOns\\Worgenstein\\GFX\\line")
 	Player.EnemyLoSFrame.texture:SetVertexColor(1,1,1,1);
@@ -266,9 +258,9 @@ function MapEditor.UpdatePlayer()
 	local y2FoVR = sin(Player.Direction- Player.FoV/2) * 100;
 	Zee.DrawLine(Player.FoVRightFrame, 0, 0, x2FoVR, y2FoVR, 20, {1,1,1,1}, "OVERLAY");
 
-	--Player.IconFrame:SetPoint("BOTTOMLEFT",Player.Position.x * WG.MapEditor.minimapCellSize+ (WG.MapEditor.minimapCellSize/2), Player.Position.y * WG.MapEditor.minimapCellSize + (WG.MapEditor.minimapCellSize/2));
+	--Player.IconFrame:SetPoint("BOTTOMLEFT",Player.Position.x * MapEditor.minimapCellSize+ (MapEditor.minimapCellSize/2), Player.Position.y * MapEditor.minimapCellSize + (MapEditor.minimapCellSize/2));
 	if Player.IconFrame ~= nil then -- added because it sometimes isn't loaded yet
-		Player.IconFrame:SetPoint("BOTTOMLEFT",Player.Position.x * (WG.MapEditor.minimapCellSize+1)+ (WG.MapEditor.minimapCellSize/2) - iconSizeX/2, Player.Position.y * (WG.MapEditor.minimapCellSize+1) + (WG.MapEditor.minimapCellSize/2) - iconSizeY/2);
+		Player.IconFrame:SetPoint("BOTTOMLEFT",Player.Position.x * (MapEditor.minimapCellSize+1)+ (MapEditor.minimapCellSize/2) - iconSizeX/2, Player.Position.y * (MapEditor.minimapCellSize+1) + (MapEditor.minimapCellSize/2) - iconSizeY/2);
 	end
 end
 

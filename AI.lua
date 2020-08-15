@@ -1,7 +1,3 @@
-
-Zee = Zee or {};
-Zee.Worgenstein = Zee.Worgenstein or {};
-Zee.Worgenstein.AI = Zee.Worgenstein.AI or {}
 local AI = Zee.Worgenstein.AI;
 local Canvas = Zee.Worgenstein.Canvas;
 local Ray = Zee.Worgenstein.Raycasting;
@@ -10,6 +6,7 @@ local Settings = Zee.Worgenstein.Settings;
 local Properties = Zee.Worgenstein.Map.DataTypeProperties;
 local BlockName = Zee.Worgenstein.Map.DataTypeNames;
 local MapEditor = Zee.Worgenstein.MapEditor;
+local Sprites = Zee.Worgenstein.Sprites;
 
 AI.EnemySprites = {};
 AI.totalEnemies = 0;
@@ -24,21 +21,21 @@ AI.EnemyState.DEAD = 3;
 
 function AI.Initialize()
 	--compile a list of all enemies
-	for s = 1, Canvas.totalSprites, 1 do
-		if Canvas.spriteList[s].property.enemy == true then
+	for s = 1, Sprites.totalSprites, 1 do
+		if Sprites.spriteList[s].property.enemy == true then
 			AI.totalEnemies = AI.totalEnemies + 1;
 			AI.EnemySprites[AI.totalEnemies] = s;
-			if Canvas.spriteList[s].property.alive == true then
+			if Sprites.spriteList[s].property.alive == true then
 				AI.totalAliveEnemies = AI.totalAliveEnemies + 1;
 				AI.AliveEnemySprites[AI.totalAliveEnemies] = s;
-				if Canvas.spriteList[s].property.standing == true then
-					Canvas.spriteList[s].enemyStatus = AI.EnemyState.IDLE;
+				if Sprites.spriteList[s].property.standing == true then
+					Sprites.spriteList[s].enemyStatus = AI.EnemyState.IDLE;
 				end
-				if Canvas.spriteList[s].property.patrolling == true then
-					Canvas.spriteList[s].enemyStatus = AI.EnemyState.PATROLLING;
+				if Sprites.spriteList[s].property.patrolling == true then
+					Sprites.spriteList[s].enemyStatus = AI.EnemyState.PATROLLING;
 				end				
 			else
-				Canvas.spriteList[s].enemyStatus = AI.EnemyState.DEAD;
+				Sprites.spriteList[s].enemyStatus = AI.EnemyState.DEAD;
 			end
 		end
 	end
@@ -101,7 +98,7 @@ function AI.Update()
 	local sprite;
 	local distance;
 	for e = 1, AI.totalEnemies, 1 do
-		sprite = Canvas.spriteList[AI.EnemySprites[e]];
+		sprite = Sprites.spriteList[AI.EnemySprites[e]];
 
 		-- Aggro Enter
 		distance = Ray.DistanceBetweenTwoPoints(Player.Position.x, Player.Position.y, sprite.x, sprite.y);

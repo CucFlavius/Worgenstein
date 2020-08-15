@@ -1,13 +1,7 @@
 ------------------------------
 --			Globals			--
 ------------------------------
-Zee = Zee or {};
-Zee.Worgenstein = Zee.Worgenstein or {};
-Zee.Worgenstein.Player = Zee.Worgenstein.Player or {};
-Zee.Worgenstein.Map = Zee.Worgenstein.Map or {};
-Zee.Worgenstein.MapEditor = Zee.Worgenstein.MapEditor or {}
-local WG = Zee.Worgenstein;
-local Player = WG.Player;
+local Player = Zee.Worgenstein.Player;
 local Graph = Zee.Graph;
 local Map = Zee.Worgenstein.Map;
 local MapEditor = Zee.Worgenstein.MapEditor;
@@ -16,6 +10,7 @@ local DataType = Zee.Worgenstein.Map.DataType;
 local Properties = Zee.Worgenstein.Map.DataTypeProperties;
 local Settings = Zee.Worgenstein.Settings;
 local Canvas = Zee.Worgenstein.Canvas;
+local Weapon = Zee.Worgenstein.Weapon;
 
 Player.Action = {};						-- the collection of player action booleans
 Player.Action.TurnLeft = false;			-- true if turn right key is pressed
@@ -87,12 +82,12 @@ function Player.Input(key, pressed)
  end
 
 function Player.Shoot(pressed)
-	Canvas.gunFrame:SetAnimation(49);
+	Weapon.gunFrame:SetAnimation(49);
 	if pressed == true then
-		Canvas.gunParticleFrame:SetAnimation(0);
-		Canvas.gunParticleFrame:Show();
-		Canvas.gunParticleFrame:SetModel(1269534);
-		Canvas.gunParticleFrame.timer = 1;
+		Weapon.gunParticleFrame:SetAnimation(0);
+		Weapon.gunParticleFrame:Show();
+		Weapon.gunParticleFrame:SetModel(1269534);
+		Weapon.gunParticleFrame.timer = 1;
 	end
 end
 
@@ -163,28 +158,28 @@ function Player.Movement()
 		local xDestinationPerpendicular = 0;
 		local yDestinationPerpendicular = 0;
 
-		if WG.CheckCollision(xDestination, yDestination) == false then
+		if Zee.Worgenstein.CheckCollision(xDestination, yDestination) == false then
 			Player.Position.x = xDestination;
 			Player.Position.y = yDestination;
 		else	
-			WG.Slide(xDestination, yDestination);
+			Zee.Worgenstein.Slide(xDestination, yDestination);
 		end
 	end
 
 	if Player.Action.MoveBackward then
 		local xDestination = Player.Position.x - (Player.moveSpeed * math.cos(DegreeToRadian(Player.Direction)));
 		local yDestination = Player.Position.y - (Player.moveSpeed * math.sin(DegreeToRadian(Player.Direction)));
-		if WG.CheckCollision(xDestination, yDestination) == false then
+		if Zee.Worgenstein.CheckCollision(xDestination, yDestination) == false then
 			Player.Position.x = xDestination;
 			Player.Position.y = yDestination;
 		else	
-			WG.Slide(xDestination, yDestination);
+			Zee.Worgenstein.Slide(xDestination, yDestination);
 		end
 	end
 	if Player.Action.StrafeLeft then
 		local xDestination = Player.Position.x + (Player.moveSpeed * math.cos(DegreeToRadian(Player.Direction + 90)));
 		local yDestination = Player.Position.y + (Player.moveSpeed * math.sin(DegreeToRadian(Player.Direction + 90)));
-		if WG.CheckCollision(xDestination, yDestination) == false then
+		if Zee.Worgenstein.CheckCollision(xDestination, yDestination) == false then
 			Player.Position.x = xDestination;
 			Player.Position.y = yDestination;
 		end
@@ -192,7 +187,7 @@ function Player.Movement()
 	if Player.Action.StrafeRight then
 		local xDestination = Player.Position.x + (Player.moveSpeed * math.cos(DegreeToRadian(Player.Direction - 90)));
 		local yDestination = Player.Position.y + (Player.moveSpeed * math.sin(DegreeToRadian(Player.Direction - 90)));
-		if WG.CheckCollision(xDestination, yDestination) == false then
+		if Zee.Worgenstein.CheckCollision(xDestination, yDestination) == false then
 			Player.Position.x = xDestination;
 			Player.Position.y = yDestination;
 		end

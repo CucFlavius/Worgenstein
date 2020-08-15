@@ -1,4 +1,3 @@
-Zee.Worgenstein.Map.DataTypeNames = Zee.Worgenstein.Map.DataTypeNames or {};
 Zee.Worgenstein.Map.DataTypeNames = {
 	"Nothing - 0",
 	"DefaultWall - 1",

@@ -1,7 +1,3 @@
-Zee = Zee or {};
-Zee.Worgenstein = Zee.Worgenstein or {};
-Zee.Worgenstein.Map = Zee.Worgenstein.Map or {};
-Zee.Worgenstein.Map.DataType = Zee.Worgenstein.Map.DataType or {};
 local DataType = Zee.Worgenstein.Map.DataType;
 
 -- Ground Data --
