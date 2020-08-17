@@ -12,6 +12,7 @@ Direction.Vertical = 0;
 Direction.Horizontal = 1;
 
 Textures.Tileset1 = "Interface\\AddOns\\Worgenstein\\GFX\\Tileset1.blp";
+Textures.Ground0 = 852895;
 Textures.Ground1 = "Interface\\AddOns\\Worgenstein\\GFX\\Ground1.blp";
 
 --tileset/7.0/araknashal/data/7an_vrykulbones01_256.blp

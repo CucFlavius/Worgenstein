@@ -177,7 +177,7 @@ function MapEditor.DrawPlayer()
 	Player.HitPoint:SetWidth(iconSizeX) -- Set these to whatever height/width is needed 
 	Player.HitPoint:SetHeight(iconSizeY) -- for your Texture
 	local tHitPoint = Player.HitPoint:CreateTexture(nil,"BACKGROUND")
-	tHitPoint:SetColorTexture(1,1,1,1);
+	tHitPoint:SetColorTexture(1,1,0,1);
 	Player.HitPoint.texture = tHitPoint
 	Player.HitPoint:SetPoint("BOTTOMLEFT",0, 0);
 	Player.HitPoint:SetFrameLevel(15);

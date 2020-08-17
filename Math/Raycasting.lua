@@ -539,6 +539,247 @@ function Ray.Simple(x0, y0, x1, y1)
 	return ray
 end
 
+function Ray.SimpleGround(x0, y0, x1, y1)
+	ray.uvDistance = 0;
+	ray.uvDirection = 1;
+	ray.BoxesHit = {};
+	Ray.BoxesHitMap = {};
+    dx = abs(x1 - x0);
+    dy = abs(y1 - y0);
+    x = floor(x0);
+    y = floor(y0);
+    n = 1;
+    if (dx == 0) then
+        x_inc = 0;
+        err = math.huge;
+    elseif (x1 > x0) then
+        x_inc = 1;
+        n = n + (floor(x1) - x);
+        err = (floor(x0) + 1 - x0) * dy;
+    else
+        x_inc = -1;
+        n = n + (x - (floor(x1)));
+        err = (x0 - floor(x0)) * dy;
+    end
+    if (dy == 0) then
+        y_inc = 0;
+        err = err -math.huge;
+    elseif (y1 > y0) then
+        y_inc = 1;
+        n = n + ((floor(y1)) - y);
+        err = err - ((floor(y0) + 1 - y0) * dx);
+    else
+        y_inc = -1;
+        n = n + (y - (floor(y1)));
+        err = err - ((y0 - floor(y0)) * dx);
+    end
+    previousHitBoxX = floor(y0);
+    previousHitBoxY = floor(x0);
+	ray.hit = true;
+	ray.hitCount = n;
+    for k = 1, n, 1 do
+    	if (x <= Map.size and y <= Map.size) then
+    		if x < 0 then x = 0; end
+    		if y < 0 then y = 0; end
+    		-- check first wall hit
+			if Map.Data[x][y] ~= nil then
+				if ((x % 2 == 0 and y % 2 == 0) or (x % 2 ~= 0 and y % 2 ~= 0)) then
+					ray.ground = 0
+				else
+					ray.ground = 1
+				end
+				ray.hitBoxX = x;
+				ray.hitBoxY = y;
+		    end
+		    previousHitBoxX = x;
+		    previousHitBoxY = y;
+	        if (err > 0) then
+	            y = y + y_inc;
+	            err = err - dx;
+	        else
+	            x = x + x_inc;
+	            err = err + dy;
+			end
+    		ray.BoxesHit[k] = {};
+    		ray.BoxesHit[k].x = x;
+    		ray.BoxesHit[k].y = y;
+		end
+	end
+	return ray
+end
+
+
+local previousHitPointX = 0;
+local previousHitPointY = 0;
+function Ray.CastGround(x0, y0, x1, y1)
+	passed = true;
+	Ray.Log = "";
+	ray.passthrough = false;	
+	ray.uvDistance = 0;
+	ray.uvDirection = 1;
+	Ray.BoxesHit = {};
+	Ray.BoxesHitMap = {};
+    dx = abs(x1 - x0);
+    dy = abs(y1 - y0);
+    x = floor(x0);
+    y = floor(y0);
+    n = 1;
+    if (dx == 0) then
+        x_inc = 0;
+        err = math.huge;
+    elseif (x1 > x0) then
+        x_inc = 1;
+        n = n + (floor(x1) - x);
+        err = (floor(x0) + 1 - x0) * dy;
+    else
+        x_inc = -1;
+        n = n + (x - (floor(x1)));
+        err = (x0 - floor(x0)) * dy;
+    end
+    if (dy == 0) then
+        y_inc = 0;
+        err = err -math.huge;
+    elseif (y1 > y0) then
+        y_inc = 1;
+        n = n + ((floor(y1)) - y);
+        err = err - ((floor(y0) + 1 - y0) * dx);
+    else
+        y_inc = -1;
+        n = n + (y - (floor(y1)));
+        err = err - ((y0 - floor(y0)) * dx);
+    end
+    previousHitBoxX = floor(x0);
+    previousHitBoxY = floor(y0);
+    hitPointX = 0;
+    hitPointY = 0;
+    for k = 1, n, 1 do
+    	if (x <= Map.size and y <= Map.size) then
+    		if x < 0 then x = 0; end
+    		if y < 0 then y = 0; end
+    		-- check first wall hit
+			if Map.Data[x][y] ~= nil then
+				a.x = x0;
+				a.y = y0;
+				b.x = x1;
+				b.y = y1;
+				c.x = 0;
+				c.y = 0;
+				d.x = 0;
+				d.y = 0;
+				edgeHit = 0;			
+				-- left edge
+				if x > previousHitBoxX then
+					c.x = x;
+					c.y = 0;
+					d.x = x;
+					d.y = Map.size;
+					edgeHit = 1;
+					ray.uvDirection = -1;
+				end
+				-- right edge
+				if x < previousHitBoxX then
+					c.x = x + 1;
+					c.y = 0;
+					d.x = x + 1;
+					d.y = Map.size;
+					edgeHit = 2;
+					ray.uvDirection = 1;
+				end
+				-- bottom edge
+				if y > previousHitBoxY then
+					c.x = 0;
+					c.y = y;
+					d.x = Map.size;
+					d.y = y;
+					edgeHit = 3;
+					ray.uvDirection = 1;
+				end
+				-- top edge
+				if y < previousHitBoxY then
+					c.x = 0;
+					c.y = y + 1;
+					d.x = Map.size;
+					d.y = y + 1;
+					edgeHit = 4;
+					ray.uvDirection = -1;
+				end
+				result = Ray.LinesIntersection(a,b,c,d);
+				if result ~= nil then
+					hitPointX = result.x;
+					hitPointY = result.y;
+
+					-- todo : calc distance between the hit point and previous hit points (which I don't store yet) and add to array of distances (which I dont have yet) that we return
+				end
+			end
+		    previousHitBoxX = x;
+		    previousHitBoxY = y;
+	        if (err > 0) then
+	            y = y + y_inc;
+	            err = err - dx;
+	        else
+	            x = x + x_inc;
+	            err = err + dy;
+			end
+		end
+	end
+	return ray;
+end
+
+function Ray.BoxCheck(x0, y0, x1, y1)
+	local visitedSquares = {}
+    local dx = fabs(x1 - x0);
+    local dy = fabs(y1 - y0);
+
+    local x = math.floor(x0);
+    local y = math.floor(y0);
+
+    local n = 1;
+    local x_inc, y_inc;
+    local error;
+
+    if (dx == 0) then
+        x_inc = 0;
+        error = math.huge;
+    elseif (x1 > x0) then
+        x_inc = 1;
+        n = n + math.floor(x1) - x;
+        error = (math.floor(x0) + 1 - x0) * dy;
+    else
+        x_inc = -1;
+        n = n + x - math.floor(x1);
+        error = (x0 - math.floor(x0)) * dy;
+	end
+
+    if (dy == 0) then
+        y_inc = 0;
+        error = error - math.huge;
+    elseif (y1 > y0) then
+        y_inc = 1;
+        n = n + math.floor(y1) - y;
+        error = error - (math.floor(y0) + 1 - y0) * dx;
+    else
+        y_inc = -1;
+        n = n + y - math.floor(y1);
+        error = error - (y0 - math.floor(y0)) * dx;
+	end
+
+	local index = 0;
+	local N;
+    for N = n, N > 0, -1 do
+		visitedSquares[index] = {};
+		visitedSquares[index].x = x;
+		visitedSquared[index].y = y;
+		index = index + 1;
+        if (error > 0) then
+            y = y + y_inc;
+            error = error - dx;
+        else
+            x = x + x_inc;
+            error = error + dy;
+		end
+    end
+end
+
 -- unused
 function Ray.MinimapHighlightBoxesHit()
 	for _, hit in ipairs(Ray.BoxesHit) do

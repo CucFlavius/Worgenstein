@@ -2,11 +2,19 @@
 -- Worgenstein Debugger							--
 --------------------------------------------------
 local Debugger = Zee.Worgenstein.Debugger;
+local Ground = Zee.Worgenstein.Ground;
 local Win = Zee.WindowAPI;
-
 
 Debugger.Window = Win.CreateWindow(400, 400, 800, 50, UIParent, "CENTER", "CENTER", false, "Zee.Worgenstein.Debugger.Window");
 Debugger.Log = Win.CreateTextBox(5, -5, 800, 20, Debugger.Window , "TOPLEFT", "TOPLEFT", "Debugger", nil, nil);
+
+function Debugger.CreateGroundDebugger()
+    Debugger.GroundWindow = Win.CreateWindow(400, 0, 100, 830, UIParent, "CENTER", "CENTER", false, "Zee.Worgenstein.Debugger.GroundWindow");
+    Debugger.GroundLog = {};
+    for k = 1, Ground.groundVisLines, 1 do
+        Debugger.GroundLog[k] = Win.CreateTextBox(5, -5 - (k * 16), 90, 14, Debugger.GroundWindow , "TOPLEFT", "TOPLEFT", "100", nil, nil);
+    end
+end
 
 -- Hide unnecesary game UI for debugging --
 
