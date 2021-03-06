@@ -2,6 +2,7 @@
 --	Settings Lua																    --
 --------------------------------------------------------------------------------------
 local Settings = Zee.Worgenstein.Settings;
+Settings = Settings or {}
 
 Settings.UPDATE_INTERVAL = 0.01;
 Zee.Worgenstein.Settings.RunUpdateLoop = true;

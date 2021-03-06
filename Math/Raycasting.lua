@@ -768,7 +768,7 @@ function Ray.BoxCheck(x0, y0, x1, y1)
     for N = n, N > 0, -1 do
 		visitedSquares[index] = {};
 		visitedSquares[index].x = x;
-		visitedSquared[index].y = y;
+		visitedSquares[index].y = y;
 		index = index + 1;
         if (error > 0) then
             y = y + y_inc;

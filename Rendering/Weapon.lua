@@ -49,7 +49,7 @@ Weapon.InitialPosition = { -0.4,-0.8,-0.8 };
 		Weapon.gunFrame:Undress()
 		--local appearanceID, sourceID = C_TransmogCollection.GetItemInfo(159657);
 		Weapon.gunFrame:TryOn(95444);
-		Weapon.gunFrame:SetCustomCamera(1);
+		
 		Weapon.gunFrame:SetAnimation(49);	
 	
 		-- left handed
@@ -59,10 +59,16 @@ Weapon.InitialPosition = { -0.4,-0.8,-0.8 };
 	
 		-- right handed
 		--Weapon.gunFrame:SetCameraPosition(0, 0, 0.51);
-		Weapon.gunFrame:SetCameraPosition(-0.7, -0.4, 1);
-		
+
+		-- Setting camera and camera position in the OnShow event so we don't get a "is not using a custom camera" error at the start
+		Weapon.gunFrame:SetScript("OnShow", 
+		function(self)
+			Weapon.gunFrame:SetPosition(-0.4,-0.8,-0.8);
+			Weapon.gunFrame:SetCustomCamera(1);
+			Weapon.gunFrame:SetCameraPosition(-0.7, -0.4, 1);
+		end);
 		--Weapon.gunFrame:SetPosition(0.5,-0.4,-1);
-		Weapon.gunFrame:SetPosition(-0.4,-0.8,-0.8);
+		
 		--Weapon.gunFrame:SetRotation(0.9);
 		Weapon.gunFrame:SetRotation(1);
 	

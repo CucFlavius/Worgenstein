@@ -4,6 +4,8 @@ local Textures = Zee.Worgenstein.Textures;
 local Player = Zee.Worgenstein.Player;
 local Debugger = Zee.Worgenstein.Debugger;
 local Ray = Zee.Worgenstein.Raycasting;
+local Map = Zee.Worgenstein.Map;
+local Properties = Zee.Worgenstein.Map.DataTypeProperties;
 
 Ground.groundVisLines = 50;
 Ground.renderDensityGround = 8;
