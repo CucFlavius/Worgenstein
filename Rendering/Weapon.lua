@@ -27,61 +27,67 @@ Weapon.InitialPosition = { -0.4,-0.8,-0.8 };
 	-- spells/cfx_rogue_pistolshot_casthandr.m2
 
 
-	function Weapon.CreateGunFrame()
-		-- create GunFrame
-		Weapon.gunFrame = CreateFrame("DressUpModel",nil,Canvas.renderFrame);
-		Weapon.gunFrame:SetFrameStrata("MEDIUM");
-		Weapon.gunFrame:SetWidth(300) -- Set these to whatever height/width is needed 
-		Weapon.gunFrame:SetHeight(300) -- for your Texture
-		Weapon.gunFrame:SetItem(159657)
-		Weapon.gunFrame:SetAnimation(0);
-		Weapon.gunFrame:SetRotation(math.rad(200))
-		Weapon.gunFrame:SetAlpha(1)
-		--Weapon.gunFrame:SetCustomCamera(1)
-		local cx, cy, cz = Weapon.gunFrame:GetCameraPosition()
-		--Zee.Worgenstein.Weapon.gunFrame:SetPosition(1, 0.3, 0.5)
-		Weapon.gunFrame:SetPoint("BOTTOMRIGHT",0, 0);
-		Weapon.gunFrame:Show();
-		Weapon.gunFrame:SetFrameLevel(90);
-	
-		Weapon.gunFrame:SetUnit('player');
-		Weapon.gunFrame:SetCustomRace(1);
-		Weapon.gunFrame:Undress()
-		--local appearanceID, sourceID = C_TransmogCollection.GetItemInfo(159657);
-		Weapon.gunFrame:TryOn(95444);
-		Weapon.gunFrame:SetCustomCamera(1);
-		Weapon.gunFrame:SetAnimation(49);	
-	
-		-- left handed
-		--Weapon.gunFrame:SetCameraPosition(0, 0.1, 1);
-		--Weapon.gunFrame:SetPosition(1,1,0);1269534
-		--Weapon.gunFrame:SetRotation(0);
-	
-		-- right handed
-		--Weapon.gunFrame:SetCameraPosition(0, 0, 0.51);
-		Weapon.gunFrame:SetCameraPosition(-0.7, -0.4, 1);
-		
-		--Weapon.gunFrame:SetPosition(0.5,-0.4,-1);
-		Weapon.gunFrame:SetPosition(-0.4,-0.8,-0.8);
-		--Weapon.gunFrame:SetRotation(0.9);
-		Weapon.gunFrame:SetRotation(1);
-	
-	
-		Weapon.gunParticleFrame = CreateFrame("PlayerModel",nil,Canvas.renderFrame);
-		Weapon.gunParticleFrame:SetFrameStrata("MEDIUM");
-		Weapon.gunParticleFrame:SetWidth(500) -- Set these to whatever height/width is needed 
-		Weapon.gunParticleFrame:SetHeight(500) -- for your Texture
-		Weapon.gunParticleFrame:SetPoint("BOTTOMRIGHT",0, 0);
-		Weapon.gunParticleFrame:Hide();
-		Weapon.gunParticleFrame:SetFrameLevel(80);
-		Weapon.gunParticleFrame:SetModel(1269534);
-		Weapon.gunParticleFrame:SetPosition(-50, 5, -28);
-		Weapon.gunParticleFrame:SetAlpha(0.2);
-		Weapon.gunParticleFrame.timer = 1;
-		--Weapon.gunParticleFrame:SetAnimation(0);
-		--/run Zee.Worgenstein.Weapon.gunParticleFrame:SetPosition(0, 0, 1);
-	end
+function Weapon.CreateGunFrame()
+    -- create GunFrame
+    Weapon.gunFrame = CreateFrame("DressUpModel",nil,Canvas.renderFrame);
+    Weapon.gunFrame:SetFrameStrata("MEDIUM");
+    Weapon.gunFrame:SetWidth(300) -- Set these to whatever height/width is needed 
+    Weapon.gunFrame:SetHeight(300) -- for your Texture
+    Weapon.gunFrame:SetItem(159657)
+    Weapon.gunFrame:SetAnimation(0);
+    Weapon.gunFrame:SetRotation(math.rad(200))
+    Weapon.gunFrame:SetAlpha(1)
+    --Weapon.gunFrame:SetCustomCamera(1)
+    local cx, cy, cz = Weapon.gunFrame:GetCameraPosition()
+    --Zee.Worgenstein.Weapon.gunFrame:SetPosition(1, 0.3, 0.5)
+    Weapon.gunFrame:SetPoint("BOTTOMRIGHT",0, 0);
+    Weapon.gunFrame:Show();
+    Weapon.gunFrame:SetFrameLevel(90);
 
+    Weapon.gunFrame:SetUnit('player');
+    Weapon.gunFrame:SetCustomRace(1);
+    Weapon.gunFrame:Undress()
+    --local appearanceID, sourceID = C_TransmogCollection.GetItemInfo(159657);
+    Weapon.gunFrame:TryOn(95444);
+    
+    Weapon.gunFrame:SetAnimation(49);	
+
+    -- left handed
+    --Weapon.gunFrame:SetCameraPosition(0, 0.1, 1);
+    --Weapon.gunFrame:SetPosition(1,1,0);1269534
+    --Weapon.gunFrame:SetRotation(0);
+
+    -- right handed
+    --Weapon.gunFrame:SetCameraPosition(0, 0, 0.51);
+
+    -- Setting camera and camera position in the OnShow event so we don't get a "is not using a custom camera" error at the start
+    Weapon.gunFrame:SetScript("OnShow", function(self) -- TODO: does this even get called ?
+        Weapon.gunFrame:SetPosition(-0.4,-0.8,-0.8);
+        Weapon.gunFrame:SetCustomCamera(1);
+        Weapon.gunFrame:SetCameraPosition(-0.7, -0.4, 1);
+    end);
+    --Weapon.gunFrame:SetPosition(0.5,-0.4,-1);
+    Weapon.gunFrame:SetPosition(-0.4,-0.8,-0.8);
+    Weapon.gunFrame:SetCustomCamera(1);
+    Weapon.gunFrame:SetCameraPosition(-0.7, -0.4, 1);
+    --Weapon.gunFrame:SetRotation(0.9);
+    Weapon.gunFrame:SetRotation(1);
+
+
+    Weapon.gunParticleFrame = CreateFrame("PlayerModel",nil,Canvas.renderFrame);
+    Weapon.gunParticleFrame:SetFrameStrata("MEDIUM");
+    Weapon.gunParticleFrame:SetWidth(500);
+    Weapon.gunParticleFrame:SetHeight(500);
+    Weapon.gunParticleFrame:SetPoint("BOTTOMRIGHT",0, 0);
+    Weapon.gunParticleFrame:Hide();
+    Weapon.gunParticleFrame:SetFrameLevel(80);
+    Weapon.gunParticleFrame:SetModel(1269534);
+    Weapon.gunParticleFrame:SetPosition(-50, 5, -28);
+    Weapon.gunParticleFrame:SetAlpha(0.2);
+    Weapon.gunParticleFrame.timer = 1;
+    --Weapon.gunParticleFrame:SetAnimation(0);
+    --/run Zee.Worgenstein.Weapon.gunParticleFrame:SetPosition(0, 0, 1);
+end
 
 function Weapon.TurnLeft()
 	if Weapon.TurnPercentageLeft < Weapon.TurnMaxAngle then
@@ -136,7 +142,6 @@ function Weapon.ResetTurn()
 end
 
 function Weapon.Update()
-
 	if Player.Action.TurnLeft then
 		Weapon.TurnLeft();
 	end

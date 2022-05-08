@@ -1,4 +1,6 @@
 local Door = Zee.Worgenstein.Door;
+local Settings = Zee.Worgenstein.Settings;
+local Map = Zee.Worgenstein.Map;
 
 Door.currentDoorAnimation = nil;
 Door.animatingDoor = false;

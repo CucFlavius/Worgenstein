@@ -1,3 +1,7 @@
+Zee = Zee or {};
+Zee.Worgenstein = Zee.Worgenstein or {};
+local WG = Zee.Worgenstein;
+Zee.Worgenstein.Data = Zee.Worgenstein.Data or {};
 local Data = Zee.Worgenstein.Data;
 
 Data["Episode1Floor1"] = {{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 1, 73, 73, 73, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, [0] = 1,},

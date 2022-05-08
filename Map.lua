@@ -1,22 +1,27 @@
+Zee = Zee or {};
+Zee.Worgenstein = Zee.Worgenstein or {};
+local WG = Zee.Worgenstein;
+Zee.Worgenstein.Data = Zee.Worgenstein.Data or {};
 local Data = Zee.Worgenstein.Data;
+Zee.Worgenstein.Map = Zee.Worgenstein.Map or {};
 local Map = Zee.Worgenstein.Map;
+Zee.Worgenstein.MapEditor = Zee.Worgenstein.MapEditor or {}
 local MapEditor = Zee.Worgenstein.MapEditor;
 local Ray = Zee.Worgenstein.Raycasting;
-local DataType = Map.DataType;
-local Property = Map.DataTypeProperties;
-local Orientation = Map.Orientation;
-
-Map.size = 16;
+Map.size = 64;
 Map.diagonal = Map.size * math.sqrt(2);
 Map.DataType = Map.DataType or {};
 Map.Orientation = Map.Orientation or {};
+local DataType = Map.DataType;
+local Property = Map.DataTypeProperties;
+local Orientation = Map.Orientation;
 Map.Doors = {};
 
 -- enums --
 
 function Map.LoadData()
-	Map.Data = WorgensteinMapData; -- load saved variable instead
-	--Map.Data = Data["Episode1Floor1"];
+	--Map.Data = WorgensteinMapData;
+	Map.Data = Data["Episode1Floor1"];
 	WorgensteinMapData = Map.Data;
 end
 
@@ -104,6 +109,7 @@ function Map.GenerateEmpty()
 		for y = 0, Map.size, 1 do
 			Map.Data[x][y] = {};
 			Map.Data[x][y] = DataType.Nothing;
+			--Map.Data[x][y].property = 0;
 		end
 	end
 end
@@ -114,6 +120,7 @@ function Map.FillMissingData()
 			if Map.Data[x][y] == nil then
 				Map.Data[x][y] = {};
 				Map.Data[x][y] = DataType.GreyBrick1;
+				--Map.Data[x][y].property = 0;
 			end
 		end
 	end
@@ -137,6 +144,7 @@ function Map.Fill()
 			for y = 0, Map.size, 1 do
 				Map.Data[x][y] = {};
 				Map.Data[x][y] = MapEditor.selectedTab - 1;
+				--Map.Data[x][y].property = 0;
 			end
 		end
 	end
@@ -151,7 +159,7 @@ function Map.LoadDoors()
 		for y = 0, Map.size, 1 do
 			local blockType = Map.Data[x][y]
 			if Property[blockType] ~= nil then
-				if Property[blockType].door ~= nil then
+				if Property[blockType].door == true then
 					Map.Doors[x][y] = 1;
 				else
 					Map.Doors[x][y] = -1;

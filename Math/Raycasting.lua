@@ -33,7 +33,6 @@ local n_a;
 local n_b;
 local ua;
 local ub;
-
 function Ray.LinesIntersection( a, b, c, d )
         -- parameter conversion
         L1 = {X1=a.x,Y1=a.y,X2=b.x,Y2=b.y}
@@ -72,79 +71,14 @@ function Ray.LinesIntersection( a, b, c, d )
     	return nil;
 end
 
--- version 2
-local adjacentCathetus;
-local sideCathetus;
-local xPoint;
-local yPoint;
-local result = {};
-function Ray.LinesIntersectionV2( edgeHit, rayAngle, x, y )
-	if rayAngle % 90 == 0 then
-		return nil;
-	end
-	if edgeHit == 1 then
-		sideCathetus = Player.Position.xCell;
-		adjacentCathetus = tan(180 - rayAngle) * sideCathetus;
-		xPoint = 0;
-		yPoint = adjacentCathetus + Player.Position.yCell;
-	elseif edgeHit == 2 then
-		sideCathetus = 1 - Player.Position.xCell;
-		adjacentCathetus = tan(rayAngle) * sideCathetus;
-		xPoint = 1;
-		yPoint = adjacentCathetus + Player.Position.yCell;
-	elseif edgeHit == 3 then
-		sideCathetus = Player.Position.yCell;
-		adjacentCathetus = tan(rayAngle - 270) * sideCathetus;
-		xPoint = adjacentCathetus + Player.Position.xCell;
-		yPoint = 0;
-	elseif edgeHit == 4 then
-		sideCathetus = 1 - Player.Position.yCell;
-		adjacentCathetus = tan(90 - rayAngle) * sideCathetus;
-		xPoint = adjacentCathetus + Player.Position.xCell;
-		yPoint = 1;
-	else
-		return nil;
-	end
---[[
-	if Player.Position.x < x then
-		result.x = x + xPoint;
-	elseif Player.Position.x > x then
-		result.x = x + xPoint;
-	else
-		result.x = x;
-	end
-
-	if Player.Position.y < y then
-		result.y = y + yPoint;
-	elseif Player.Position.y > y then
-		result.y = y + yPoint;
-	else
-		result.y = y;
-	end
---]]
-	result.x = x + xPoint;
-	result.y = y + yPoint;
-
-	return result;
-end
-
-
 -- Find the distance between two points --
 -- params x1, y1 = first point
 -- params x2, y2 = second point
 function Ray.DistanceBetweenTwoPoints ( x1, y1, x2, y2 )
-	local distx = x1 - x2
-	local disty = y1 - y2
-	return math.sqrt ( distx * distx + disty * disty )
+  local distx = x1 - x2
+  local disty = y1 - y2
+  return math.sqrt ( distx * distx + disty * disty )
 end
-
--- version 2
---[[
-function Ray.DistanceBetweenTwoPoints ( x1, y1, x2, y2 )
-
-end
---]]
-
 
 -- Cast a ray and return information on the point it hit
 -- param id = an index for the ray, 0 if not necessary
@@ -173,11 +107,8 @@ local c = {};
 local d = {};
 local edgeHit;	
 local result;
-local passed;
 function Ray.Cast(id, positionX, positionY, angle, distance)
-	passed = true;
 	Ray.Log = "";
-	ray.passthrough = false;	
 	ray.uvDistance = 0;
 	ray.uvDirection = 1;
 	Ray.BoxesHit = {};
@@ -237,10 +168,11 @@ function Ray.Cast(id, positionX, positionY, angle, distance)
 		    				Ray.Log =  Ray.Log .. " | " .. x .. " " .. y .. " " .. Zee.Worgenstein.Map.DataTypeNames[Map.Data[x][y]+1];
 		    			end
 		    			ray.blockType = Map.Data[x][y];
+		    			ray.blockProperty = Map.Doors[x][y];
 		    			ray.hitBoxX = x;
 		    			ray.hitBoxY = y;
 		    			-- Ray hit wall
-		    			if Properties[Map.Data[x][y]].wall == true and Properties[Map.Data[x][y]].flat == nil then
+		    			if Properties[Map.Data[x][y]].wall == true then
 							a.x = positionX;
 							a.y = positionY;
 							b.x = positionX + cos(angle) * distance--(Map.size * sqrt(2)));
@@ -287,7 +219,6 @@ function Ray.Cast(id, positionX, positionY, angle, distance)
 								ray.uvDirection = -1;
 							end
 							result = Ray.LinesIntersection(a,b,c,d);
-							--result = Ray.LinesIntersectionV2(edgeHit, angle, x, y);
 							if result ~= nil then
 				    			hitPointX = result.x;
 				    			hitPointY = result.y;
@@ -300,34 +231,16 @@ function Ray.Cast(id, positionX, positionY, angle, distance)
 
 				    		end
 				    		ray.edgeHit = edgeHit;
-
-				    		if Properties[Map.Data[x][y]].passthrough == true then
-				    			passed = false;
-				    		else
-				    			passed = true;
-				    		end
-
-				    		if passed == true then	    			
-			    				break
-			    			else
-			    				ray.passthrough = true;	
-				    			ray.blockType2 = ray.blockType;
-				    			ray.hitBoxX2 = ray.hitBoxX;
-				    			ray.hitBoxY2 = ray.hitBoxY;
-				    			ray.uvDirection2 = ray.uvDirection;
-				    			ray.uvDistance2 = ray.uvDistance;
-				    			ray.hitPointX2 = hitPointX;
-				    			ray.hitPointY2 = hitPointY;
-				    			ray.edgeHit2 = ray.edgeHit;
-			    			end
+			    			break
 			    		end
-			    		-- Ray hit flat
-			    		if Properties[Map.Data[x][y]].flat ~= nil then --and Map.Doors[x][y] > 0 then
-			    			if Properties[Map.Data[x][y]].flat == Direction.Horizontal then
+			    		-- Ray hit door
+			    		--if Properties[Map.Data[x][y].blockType].door == true and Map.Data[x][y].property > 0 then
+			    		if Properties[Map.Data[x][y]].door == true and Map.Doors[x][y] > 0 then
+			    			if Map.Data[x][y] == DataType.DoorHorizontal then
 								a.x = positionX;
 								a.y = positionY;
-			 					b.x = positionX + cos(angle) * distance
-								b.y = positionY + sin(angle) * distance
+								b.x = positionX + cos(angle) * distance--(Map.size * sqrt(2)));
+								b.y = positionY + sin(angle) * distance--(Map.size * sqrt(2)));
 								c.x = 0;
 								c.y = 0;
 								d.x = 0;
@@ -351,29 +264,31 @@ function Ray.Cast(id, positionX, positionY, angle, distance)
 									edgeHit = 4;
 									ray.uvDirection = -1;
 								end
-								result = Ray.LinesIntersection(a,b,c,d);
-								--result = Ray.LinesIntersectionV2(edgeHit, x, y);
+								local result = Ray.LinesIntersection(a,b,c,d);
 								if result ~= nil then
 					    			hitPointX = result.x;
 					    			hitPointY = result.y;
 
 					    			if (edgeHit <= 2) then	-- hit side edge
-					    				ray.uvDistance = hitPointY%1 --+(1-Map.Doors[x][y]);
+					    				--ray.uvDistance = hitPointY%1 + (1-Map.Data[x][y].property);
+					    				ray.uvDistance = hitPointY%1 + (1-Map.Doors[x][y]);
 					    			end
 					    			if (edgeHit >= 3 ) then	-- hit top/bottom edge
-					    				ray.uvDistance = hitPointX%1 --+(1-Map.Doors[x][y]);
+					    				--ray.uvDistance = hitPointX%1 + (1-Map.Data[x][y].property);
+					    				ray.uvDistance = hitPointX%1 + (1-Map.Doors[x][y]);
 					    			end
 					    		end
 								ray.edgeHit = edgeHit;
 					    		-- pass ray through
-					    		if c.x < hitPointX then--and Map.Doors[x][y] > hitPointX%1 then
+					    		--if c.x < hitPointX and Map.Data[x][y].property > hitPointX%1 then
+					    		if c.x < hitPointX and Map.Doors[x][y] > hitPointX%1 then
 				    				break	
 				    			end
-				    		elseif Properties[Map.Data[x][y]].flat == Direction.Vertical then
+				    		elseif Map.Data[x][y] == DataType.DoorVertical then	
 								a.x = positionX;
 								a.y = positionY;
-								b.x = positionX + cos(angle) * distance
-								b.y = positionY + sin(angle) * distance
+								b.x = positionX + cos(angle) * distance--(Map.size * sqrt(2))); 
+								b.y = positionY + sin(angle) * distance--(Map.size * sqrt(2)));
 								c.x = 0;
 								c.y = 0;
 								d.x = 0;
@@ -397,22 +312,21 @@ function Ray.Cast(id, positionX, positionY, angle, distance)
 								edgeHit = 2;
 								ray.uvDirection = 1;
 							end
-								result = Ray.LinesIntersection(a,b,c,d);
-								--result = Ray.LinesIntersectionV2(edgeHit, x, y);
+								local result = Ray.LinesIntersection(a,b,c,d);
 								if result ~= nil then
 					    			hitPointX = result.x;
 					    			hitPointY = result.y;
 
 					    			if (edgeHit <= 2) then	-- hit side edge
-					    				ray.uvDistance = hitPointY%1 --+(1-Map.Doors[x][y]);
+					    				ray.uvDistance = hitPointY%1 + (1-Map.Doors[x][y]);
 					    			end
 					    			if (edgeHit >= 3 ) then	-- hit top/bottom edge
-					    				ray.uvDistance = hitPointX%1 --+(1-Map.Doors[x][y]);
+					    				ray.uvDistance = hitPointX%1 + (1-Map.Doors[x][y]);
 					    			end
 					    		end
 								ray.edgeHit = edgeHit;
 					    		-- pass ray through
-					    		if c.y < hitPointY then--and Map.Doors[x][y] > hitPointY%1 then
+					    		if c.y < hitPointY and Map.Doors[x][y] > hitPointY%1 then
 				    				break	
 				    			end			    										
 				    		end	
@@ -440,18 +354,8 @@ function Ray.Cast(id, positionX, positionY, angle, distance)
 	ray.distance = distance;
 	ray.x = hitPointX;
 	ray.y = hitPointY;
-
-	if ray.passthrough == true then 
-		local distance2 = Ray.DistanceBetweenTwoPoints ( ray.hitPointX2, ray.hitPointY2, positionX, positionY );
-		local distanceCorrected2 = distance2 * cos(fi); --fisheye correction
-		ray.distanceCorrected2 = distanceCorrected2;
-		ray.distance2 = distance2;
-		ray.x2 = ray.hitPointX2;
-		ray.y2 = ray.hitPointY2;		
-	end
-
+	
 	if id == 80 then -- center line
-		Player.HitPoint:SetPoint("BOTTOMLEFT",ray.x * 11, ray.y * 11);
 		Debugger.Log.text:SetText(Ray.Log);
 	end
 	return ray;
@@ -538,6 +442,7 @@ function Ray.Simple(x0, y0, x1, y1)
 	end
 	return ray
 end
+
 
 function Ray.SimpleGround(x0, y0, x1, y1)
 	ray.uvDistance = 0;
@@ -768,7 +673,7 @@ function Ray.BoxCheck(x0, y0, x1, y1)
     for N = n, N > 0, -1 do
 		visitedSquares[index] = {};
 		visitedSquares[index].x = x;
-		visitedSquared[index].y = y;
+		visitedSquares[index].y = y;
 		index = index + 1;
         if (error > 0) then
             y = y + y_inc;
@@ -779,6 +684,7 @@ function Ray.BoxCheck(x0, y0, x1, y1)
 		end
     end
 end
+
 
 -- unused
 function Ray.MinimapHighlightBoxesHit()

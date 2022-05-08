@@ -11,6 +11,7 @@ local Properties = Zee.Worgenstein.Map.DataTypeProperties;
 local Settings = Zee.Worgenstein.Settings;
 local Canvas = Zee.Worgenstein.Canvas;
 local Weapon = Zee.Worgenstein.Weapon;
+local Door = Zee.Worgenstein.Door;
 
 Player.Action = {};						-- the collection of player action booleans
 Player.Action.TurnLeft = false;			-- true if turn right key is pressed
@@ -30,8 +31,8 @@ Player.Position.x = 0; 					-- player x start position on map
 Player.Position.y = 0; 					-- player y start position on map
 Player.Position.xCell = 0;				-- player x position relative to the current cell ( 0 to 1 )
 Player.Position.yCell = 0;				-- player y position relative to the current cell ( 0 to 1 )
-Player.turnSpeed = 1;					-- player turn speed
-Player.moveSpeed = 0.02;				-- player movement speed
+Player.turnSpeed = 2.0;					-- player turn speed
+Player.moveSpeed = 0.04;				-- player movement speed
 
 --------------------------------------
 --			Keyboard Input			--
@@ -99,11 +100,11 @@ function Player.Interact()
 			if hit.distance < Settings.DoorOpenDistance then
 				--if Map.Data[hit.hitBoxX][hit.hitBoxY].property >= 1 then
 				if Map.Doors[hit.hitBoxX][hit.hitBoxY] >= 1 then
-					Canvas.OpenDoor(hit.hitBoxX,hit.hitBoxY);
+					Door.OpenDoor(hit.hitBoxX,hit.hitBoxY);
 				end
 				--if Map.Data[hit.hitBoxX][hit.hitBoxY].property <= 0 then
 				if Map.Doors[hit.hitBoxX][hit.hitBoxY] <= 0.1 then
-				Canvas.CloseDoor(hit.hitBoxX,hit.hitBoxY);
+                    Door.CloseDoor(hit.hitBoxX,hit.hitBoxY);
 				end
 			end
 		end

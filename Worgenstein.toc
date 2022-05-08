@@ -1,4 +1,4 @@
-## Interface: 83700
+## Interface: 80100
 ## Title: Worgenstein
 ## Notes: A WoW LUA version of Wolfenstein
 ## Author: Zee (Songzee - Argent Dawn EU)
@@ -10,8 +10,8 @@
 ## X-License: GPL
 ## Version: 1.0
 
+InitializeClasses.lua
 WindowAPI\WindowAPIFiles.xml
-Initialize.lua
 Data\DataType.lua
 Data\DataTypeNames.lua
 Data\DataTypeProperties.lua

@@ -24,7 +24,7 @@ function WG.PlayerLogin()
 end
 
 function WG.VariablesLoaded()
-	WorgensteinMapData = WorgensteinMapData or {};
+    WorgensteinMapData = WorgensteinMapData or {};
 	Map.GenerateEmpty();
 	Map.LoadData();
 	Map.FillMissingData();
@@ -79,7 +79,6 @@ f:SetScript("OnEvent", onevent);
 
 
 function WG.UpdateLoop ()
-
 	Player.Movement();
 	Weapon.Update();
 	MapEditor.UpdatePlayer();
@@ -147,7 +146,7 @@ end
 function WG.OnUpdate(self, elapsed)
 	WG.timeSinceLastUpdate = WG.timeSinceLastUpdate + elapsed; 	
 	while (WG.timeSinceLastUpdate > Settings.UPDATE_INTERVAL) do
-		if Settings.RunUpdateLoop == true and Zee.Worgenstein.Loaded == true then
+		if Settings.RunUpdateLoop == true then
 			WG.UpdateLoop();
 		end
 		WG.timeSinceLastUpdate = WG.timeSinceLastUpdate - Settings.UPDATE_INTERVAL;
@@ -155,4 +154,4 @@ function WG.OnUpdate(self, elapsed)
 end
 
 WG.UpdateFrame = CreateFrame("frame")
-WG.UpdateFrame:SetScript("OnUpdate", WG.OnUpdate)	
+WG.UpdateFrame:SetScript("OnUpdate", WG.OnUpdate)

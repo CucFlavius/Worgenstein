@@ -4,17 +4,7 @@ local SecondLayerType = Zee.Worgenstein.Map.DataTypeProperties.SecondLayerType;
 local Textures = Zee.Worgenstein.Textures;
 local Direction = Properties.Direction;
 
-SecondLayerType.Off = 0;
-SecondLayerType.Indented = 1;
-SecondLayerType.OneLevelAbove = 2;
-
-Direction.Vertical = 0;
-Direction.Horizontal = 1;
-
-Textures.Tileset1 = "Interface\\AddOns\\Worgenstein\\GFX\\Tileset1.blp";
 Textures.Ground0 = 852895;
-Textures.Ground1 = "Interface\\AddOns\\Worgenstein\\GFX\\Ground1.blp";
-
 --tileset/7.0/araknashal/data/7an_vrykulbones01_256.blp
 
 -- Wood
@@ -33,182 +23,20 @@ Properties[DataType.Nothing] = { wall = false }
 ---------------
 ---- Walls ----
 ---------------
-
-Properties[DataType.DefaultWall] = 
-{
-wall = true
-}
-
-Properties[DataType.MansionExt_1A] = 
-{	
-wall = true,
-texture = Textures.Tileset1,
-uv_direction = 1,
-coords = {0, 0.125, 0.5, 0.625},
-coords_side = {0, 0.125, 0.5, 0.625},
-layer2 = SecondLayerType.OneLevelAbove,
-layer2_texture = Textures.Tileset1,
-uv2_direction = 1,
-coords2 = {0, 0.125, 0, 0.5},
-coords2_side = {0, 0.125, 0.125, 0.5},
-layer2_height = 4,
-layer2_height_side = 3
-}
-
-Properties[DataType.MansionExt_1B] = 
-{	
-wall = true,
-texture = Textures.Tileset1,
-uv_direction = 1,
-coords = {0, 0.125, 0.5, 0.625},
-coords_side = {0, 0.125, 0.5, 0.625},
-layer2 = SecondLayerType.OneLevelAbove,
-layer2_texture = Textures.Tileset1,
-uv2_direction = -1,
-coords2 = {0.125, 0.25, 0, 0.5},
-coords2_side = {0, 0.125, 0.125, 0.5},
-layer2_height = 4,
-layer2_height_side = 3
-}
-
-Properties[DataType.MansionExt_1C] = 
-{	
-wall = true,
-texture = Textures.Tileset1,
-uv_direction = 1,
-coords = {0, 0.125, 0.5, 0.625},
-coords_side = {0, 0.125, 0.5, 0.625},
-layer2 = SecondLayerType.OneLevelAbove,
-layer2_texture = Textures.Tileset1,
-uv2_direction = 1,
-coords2 = {0.125, 0.25, 0, 0.5},
-coords2_side = {0.125, 0.25, 0.125, 0.5},
-layer2_height = 4,
-layer2_height_side = 3
-}
-
-Properties[DataType.MansionExt_1D] = 
-{	
-wall = true,
-texture = Textures.Tileset1,
-uv_direction = 1,
-coords = {0, 0.125, 0.5, 0.625},
-coords_side = {0, 0.125, 0.5, 0.625},
-layer2 = SecondLayerType.OneLevelAbove,
-layer2_texture = Textures.Tileset1,
-uv2_direction = -1,
-coords2 = {0.25, 0.375, 0, 0.5},
-coords2_side = {0.25, 0.375, 0.125, 0.5},
-layer2_height = 4,
-layer2_height_side = 3
-}
-
-Properties[DataType.MansionExt_2A] = 
-{	
-wall = true,
-texture = Textures.Tileset1,
-uv_direction = 1,
-coords = {0, 0.125, 0.5, 0.625},
-coords_side = {0, 0.125, 0.5, 0.625},
-layer2 = SecondLayerType.OneLevelAbove,
-layer2_texture = Textures.Tileset1,
-uv2_direction = 1,
-coords2 = {0.25, 0.375, 0, 0.5},
-coords2_side = {0.25, 0.375, 0.125, 0.5},
-layer2_height = 4,
-layer2_height_side = 3
-}
-
-Properties[DataType.MansionExt_2B] = 
-{	
-wall = true,
-texture = Textures.Tileset1,
-uv_direction = 1,
-coords = {0, 0.125, 0.5, 0.625},
-coords_side = {0, 0.125, 0.5, 0.625},
-layer2 = SecondLayerType.OneLevelAbove,
-layer2_texture = Textures.Tileset1,
-uv2_direction = -1,
-coords2 = {0.375, 0.5, 0, 0.5},
-coords2_side = {0.375, 0.5, 0.125, 0.5},
-layer2_height = 4,
-layer2_height_side = 3
-}
-
-Properties[DataType.MansionExt_2C] = 
-{	
-wall = true,
-texture = Textures.Tileset1,
-uv_direction = 1,
-coords = {0.375, 0.5, 0.5, 0.625},
-coords_side = {0.375, 0.5, 0.5, 0.625},
-layer2 = SecondLayerType.OneLevelAbove,
-layer2_texture = Textures.Tileset1,
-uv2_direction = 1,
-coords2 = {0.375, 0.5, 0, 0.5},
-coords2_side = {0.375, 0.5, 0.125, 0.5},
-layer2_height = 4,
-layer2_height_side = 3
-}
-
-Properties[DataType.Fence_1Vertical] = 
-{	
-wall = true,
---flat = Direction.Vertical,
-texture = Textures.Tileset1,
-uv_direction = 1,
-coords = {0, 0.125, 0.625, 0.75},
-coords_side = {0, 0.125, 0.625, 0.75},
---passthrough = true
-}
-
-Properties[DataType.Fence_1Horizontal] = 
-{	
-wall = true,
---flat = Direction.Horizontal,
-texture = Textures.Tileset1,
-uv_direction = 1,
-coords = {0, 0.125, 0.625, 0.75},
-coords_side = {0, 0.125, 0.625, 0.75},
---passthrough = true
-}
-
-Properties[DataType.WallExt_1] = 
-{	
-wall = true,
-texture = Textures.Tileset1,
-uv_direction = 1,
-coords = {0.5, 0.625, 0.5, 0.625},
-coords_side = {0.5, 0.625, 0.5, 0.625},
-}
-
-Properties[DataType.WallExt_2] = 
-{	
-wall = true,
-texture = Textures.Tileset1,
-uv_direction = 1,
-coords = {0.625, 0.75, 0.5, 0.625},
-coords_side = {0.625, 0.75, 0.5, 0.625},
-}
-
-Properties[DataType.WallExt_3] = 
-{	
-wall = true,
-texture = Textures.Tileset1,
-uv_direction = 1,
-coords = {0.75, 0.875, 0.5, 0.625},
-coords_side = {0.75, 0.875, 0.5, 0.625},
-}
-
-Properties[DataType.Hedge1] = 
-{	
-wall = true,
-texture = Textures.Tileset1,
-uv_direction = 1,
-coords = {0.125, 0.25, 0.625, 0.75},
-coords_side = {0.125, 0.25, 0.625, 0.75},
-}
-
+Properties[DataType.GreyBrick1] = {	wall = true }
+Properties[DataType.GreyBrick2] = {	wall = true }
+Properties[DataType.GreyBrick3] = {	wall = true }
+Properties[DataType.GreyBrick_Flag] = {	wall = true }
+Properties[DataType.GreyBrick_Worgenstein] = {	wall = true }
+Properties[DataType.GreyBrick_Eagle] = {	wall = true }
+Properties[DataType.GreyBrick_Sign] = {	wall = true }
+Properties[DataType.DirtyBrick1] = {	wall = true }
+Properties[DataType.DirtyBrick2] = {	wall = true }
+Properties[DataType.Cell] = { wall = true, texture = 852895 }
+Properties[DataType.Cell_Skeleton] = { wall = true,	texture = 852895 }
+Properties[DataType.BlueBrick1] = {	wall = true, texture = 852895 }
+Properties[DataType.BlueBrick2] = {	wall = true, texture = 852895 }
+Properties[DataType.BlueBrick_Sign] = {	wall = true, texture = 852895 }
 Properties[DataType.Wood] = { wall = true, texture = 953619 }
 Properties[DataType.Wood_Eagle] = {	wall = true, texture = 953628 }
 Properties[DataType.Wood_Worgenstein] = { wall = true, texture = 953619 }
