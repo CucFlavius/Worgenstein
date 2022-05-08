@@ -7,6 +7,7 @@ Zee.Worgenstein = Zee.Worgenstein or {};
 Zee.Worgenstein.Settings = Zee.Worgenstein.Settings or {};
 local WG = Zee.Worgenstein;
 local Settings = Zee.Worgenstein.Settings;
+Settings = Settings or {}
 
 Settings.UPDATE_INTERVAL = 0.02; -- never set below 0.02
 Zee.Worgenstein.Settings.RunUpdateLoop = true;
