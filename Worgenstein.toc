@@ -23,7 +23,7 @@ Rendering\Door.lua
 Rendering\Sprites.lua
 Rendering\Weapon.lua
 Map.lua
-MapEditor.lua
+MapEditor2.lua
 Data\Data.lua
 Player.lua
 AI.lua

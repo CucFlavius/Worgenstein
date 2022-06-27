@@ -20,12 +20,15 @@ local Properties = Zee.Worgenstein.Map.DataTypeProperties;
 MapEditor.minimapCellSize = 10;
 MapEditor.minimapBlocks = {};
 MapEditor.selectedTab = nil;
+MapEditor.playerFrameCreated = false;
+
+local iconSizeX = 7;
+local iconSizeY = 7;
 
 function MapEditor.Initialize()
 	MapEditor.CreateMinimap();
-	MapEditor.CreateToolbox();
-	MapEditor.DrawPlayer();
-	MapEditor.UpdateMinimap();
+	--MapEditor.CreateToolbox();
+	--MapEditor.DrawPlayer();
 end
 
 local function ClickBlock(x,y)
@@ -68,8 +71,8 @@ function MapEditor.CreateMinimap ()
 	-- create BACKGROUND
 	local f = CreateFrame("Frame",nil,UIParent)
 	f:SetFrameStrata("BACKGROUND")
-	f:SetWidth(Map.size * (MapEditor.minimapCellSize+1) + MapEditor.minimapCellSize +10) -- Set these to whatever height/width is needed 
-	f:SetHeight(Map.size * (MapEditor.minimapCellSize+1) + MapEditor.minimapCellSize +10)-- for your Texture
+	f:SetWidth(Map.size * (MapEditor.minimapCellSize+1) + MapEditor.minimapCellSize + 10) -- Set these to whatever height/width is needed 
+	f:SetHeight(Map.size * (MapEditor.minimapCellSize+1) + MapEditor.minimapCellSize + 10)-- for your Texture
 	local t = f:CreateTexture(nil,"BACKGROUND")
 	t:SetColorTexture(0,0,0,1);
 	t:SetAllPoints(f)
@@ -90,6 +93,8 @@ function MapEditor.CreateMinimap ()
 			MapEditor.CreateMapBlock (x, y, Map.Data[x][y], f);
 		end
 	end
+
+    MapEditor.UpdateMinimap();
 end
 
 local function SelectTab(tab)
@@ -159,9 +164,6 @@ function MapEditor.UpdateMinimap()
 		end
 	end
 end
-
-	local iconSizeX = 7;
-	local iconSizeY = 7;
 
 function MapEditor.DrawPlayer()
 	-- Player Icon
@@ -248,9 +250,13 @@ function MapEditor.DrawPlayer()
 	Player.EnemyLoSFrame.texture:SetTexture("Interface\\AddOns\\Worgenstein\\GFX\\line")
 	Player.EnemyLoSFrame.texture:SetVertexColor(1,1,1,1);
 	Zee.DrawLine(Player.EnemyLoSFrame, 0, 0, 1, 0, 20, {1,1,1,1}, "OVERLAY");
+
+    MapEditor.playerFrameCreated = true;
 end
 
 function MapEditor.UpdatePlayer()
+    if MapEditor.playerFrameCreated == false then return end;
+
 	local mapDiagonal = (Map.size * MapEditor.minimapCellSize) * math.sqrt(2);
 	local x2 = cos(Player.Direction) * 100;
 	local y2 = sin(Player.Direction) * 100;
@@ -269,7 +275,8 @@ function MapEditor.UpdatePlayer()
 end
 
 function Zee.DrawLine(C, sx, sy, ex, ey, w, color, layer)
-	
+	if C == nil then return end
+
 	local TAXIROUTE_LINEFACTOR = 128/126; -- Multiplying factor for texture coordinates
 	local TAXIROUTE_LINEFACTOR_2 = TAXIROUTE_LINEFACTOR / 2; -- Half of that
 	local relPoint = "BOTTOMLEFT"

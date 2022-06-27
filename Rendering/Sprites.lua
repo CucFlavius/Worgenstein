@@ -299,7 +299,7 @@ end
 
 local width = 5;
 local height = 10;
-function Sprites.UpdateSprites()
+function Sprites.Update()
 	for s = 1, Sprites.totalSprites, 1 do
 		local distance = Ray.DistanceBetweenTwoPoints (Sprites.spriteList[s].x + Sprites.spriteList[s].offsetX, Sprites.spriteList[s].y + Sprites.spriteList[s].offsetY, Player.Position.x, Player.Position.y);
 		if (distance < Settings.SpriteDrawDistance) then 

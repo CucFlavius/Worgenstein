@@ -81,9 +81,9 @@ f:SetScript("OnEvent", onevent);
 function WG.UpdateLoop ()
 	Player.Movement();
 	Weapon.Update();
-	MapEditor.UpdatePlayer();
+	MapEditor.Update();
 	Canvas.Render();
-	Sprites.UpdateSprites();
+	Sprites.Update();
 	--Canvas.DistanceCulling();
 	AI.Update();
 end

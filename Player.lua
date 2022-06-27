@@ -137,7 +137,7 @@ function Player.Spawn()
 			end
 		end
 	end
-	Zee.Worgenstein.MapEditor.UpdatePlayer();
+	--Zee.Worgenstein.MapEditor.UpdatePlayer();
 end
 
 function Player.Movement()

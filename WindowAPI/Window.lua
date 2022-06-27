@@ -38,6 +38,7 @@ function Win.CreateWindow(posX, posY, sizeX, sizeY, parent, windowPoint, parentP
 	WindowFrame.texture:SetAllPoints(WindowFrame);
 	WindowFrame:SetMovable(true);
 	WindowFrame:EnableMouse(true);
+    WindowFrame:SetFrameLevel(0);
 	--WindowFrame:SetUserPlaced(true);
 
 	-- title bar frame --
@@ -55,6 +56,7 @@ function Win.CreateWindow(posX, posY, sizeX, sizeY, parent, windowPoint, parentP
 	WindowFrame.TitleBar:RegisterForDrag("LeftButton");
 	WindowFrame.TitleBar:SetScript("OnDragStart", function()  WindowFrame:StartMoving(); end);
 	WindowFrame.TitleBar:SetScript("OnDragStop", function() WindowFrame:StopMovingOrSizing(); end);
+    WindowFrame.TitleBar:SetFrameLevel(1);
 
 	-- Close Button --
 	WindowFrame.CloseButton = Win.CreateButton(-1, 0, TitleBarHeight - 1, TitleBarHeight - 1, WindowFrame.TitleBar, "TOPRIGHT", "TOPRIGHT", "X", nil, Win.BUTTON_DEFAULT)
