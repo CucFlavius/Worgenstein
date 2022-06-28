@@ -18,6 +18,15 @@ function Editor.Initialize()
     Editor.CreateMinimap();
     Editor.CreatePlayer();
     Editor.CreateToolbox();
+
+    Editor.RMBMenu = Win.Menu:New()
+    Editor.RMBMenu:AddItem('Teleport Here', function()
+        Player.Position.x = Editor.highlightedMapCoords[1] + 0.5;
+        Player.Position.y = Editor.highlightedMapCoords[2] + 0.5;
+    end)
+    Editor.RMBMenu:AddItem('Close', function()
+        -- do nothing, just close.
+    end)
 end
 
 function Editor.Update()
@@ -25,10 +34,13 @@ function Editor.Update()
     Editor.UpdateMinimap();
 end
 
+function Editor.CreateWindow()
+    Editor.Window = Win.CreateWindow(Editor.config.renderWidth / 2, 0, Editor.config.renderWidth + Editor.config.toolboxWidth, Editor.config.renderHeight, UIParent, "CENTER", "CENTER", false, "Zee.Worgenstein.MapEditor.Window");
+end
+
 function Editor.CreateMinimap()
     Editor.cellCountX = floor(Editor.config.renderWidth / Editor.config.cellSize);
     Editor.cellCountY = floor(Editor.config.renderHeight / Editor.config.cellSize);
-    Editor.Window = Win.CreateWindow(Editor.config.renderWidth / 2, 0, Editor.config.renderWidth + Editor.config.toolboxWidth, Editor.config.renderHeight, UIParent, "CENTER", "CENTER", false, "Zee.Worgenstein.MapEditor.Window");
     Editor.RenderBG = Win.CreateRectangle(0, 0, Editor.config.renderWidth, Editor.config.renderHeight, Editor.Window, "BOTTOMLEFT", "BOTTOMLEFT", 0, 0, 0, 1)
 	Editor.RenderBG:SetClipsChildren(true);
 
@@ -58,7 +70,8 @@ function Editor.CreateCell(X, Y, blockType, parent)
 	local f = CreateFrame("Button", name, parent);
 	f:SetPoint("BOTTOMLEFT", X * (Editor.config.cellSize + 1.01), Y * (Editor.config.cellSize + 1.01));
     f:SetSize(Editor.config.cellSize, Editor.config.cellSize);
-	f:SetScript("OnClick", function (self, button, down) Editor.ClickCell(X, Y) end);
+    f:RegisterForClicks("AnyUp");
+	f:SetScript("OnClick", function (self, button, down) Editor.ClickCell(X, Y, button) end);
 	f.texture = f:CreateTexture(name .. "_texture");
 	f.texture:SetTexture(Editor.mapIconsTexturePath);
 	f.texture:SetAllPoints(f);
@@ -66,21 +79,26 @@ function Editor.CreateCell(X, Y, blockType, parent)
     return f;
 end
 
-function Editor.ClickCell(x, y)
+function Editor.ClickCell(x, y, button)
     local xCoord = ceil(Player.Position.x);
     local yCoord = ceil(Player.Position.y);
     local X = x + xCoord - ceil(Editor.cellCountX / 2);
     local Y = y + yCoord - ceil(Editor.cellCountX / 2);
 
-	if Editor.selectedTab ~= nil then
-		if Map.Data[X][Y] == Editor.selectedTab - 1 then
-			Map.Data[X][Y] = 0;
-		else
-			Map.Data[X][Y] = Editor.selectedTab - 1;
-		end
+    if button == "LeftButton" then
+        if Editor.selectedTab ~= nil then
+            if Map.Data[X][Y] == Editor.selectedTab - 1 then
+                Map.Data[X][Y] = 0;
+            else
+                Map.Data[X][Y] = Editor.selectedTab - 1;
+            end
 
-		WorgensteinMapData = Map.Data;
-	end
+            WorgensteinMapData = Map.Data;
+        end
+    elseif button == "RightButton" then
+        Editor.highlightedMapCoords = { X, Y }
+        Editor.RMBMenu:Show();
+    end
 end
 
 function Editor.CreatePlayer()

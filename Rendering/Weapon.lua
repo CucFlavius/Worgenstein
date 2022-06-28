@@ -30,7 +30,7 @@ Weapon.InitialPosition = { -0.4,-0.8,-0.8 };
 function Weapon.CreateGunFrame()
     -- create GunFrame
     Weapon.gunFrame = CreateFrame("DressUpModel",nil,Canvas.renderFrame);
-    Weapon.gunFrame:SetFrameStrata("MEDIUM");
+    Weapon.gunFrame:SetFrameStrata("LOW");
     Weapon.gunFrame:SetWidth(300) -- Set these to whatever height/width is needed 
     Weapon.gunFrame:SetHeight(300) -- for your Texture
     Weapon.gunFrame:SetItem(159657)
@@ -75,7 +75,7 @@ function Weapon.CreateGunFrame()
 
 
     Weapon.gunParticleFrame = CreateFrame("PlayerModel",nil,Canvas.renderFrame);
-    Weapon.gunParticleFrame:SetFrameStrata("MEDIUM");
+    Weapon.gunParticleFrame:SetFrameStrata("LOW");
     Weapon.gunParticleFrame:SetWidth(500);
     Weapon.gunParticleFrame:SetHeight(500);
     Weapon.gunParticleFrame:SetPoint("BOTTOMRIGHT",0, 0);

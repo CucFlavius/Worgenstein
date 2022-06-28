@@ -2,6 +2,7 @@ local Ground = Zee.Worgenstein.Ground;
 local Canvas = Zee.Worgenstein.Canvas;
 local Textures = Zee.Worgenstein.Textures;
 local Player = Zee.Worgenstein.Player;
+local UI = Zee.Worgenstein.UI;
 
 Ground.groundVisLines = 50;
 Ground.renderDensityGround = 8;
@@ -13,7 +14,7 @@ function Ground.CreateFloor()
 	for k = 1, Ground.groundVisLines, 1 do
 		Ground.Floor[k] = CreateFrame("Frame",nil,Canvas.renderFrame);
 		Ground.Floor[k]:SetFrameStrata("BACKGROUND");
-		Ground.Floor[k]:SetWidth(Canvas.resolution.x) -- Set these to whatever height/width is needed 
+		Ground.Floor[k]:SetWidth(UI.config.width) -- Set these to whatever height/width is needed 
 		Ground.Floor[k]:SetHeight(5) -- for your Texture
 		Ground.Floor[k].texture = Ground.Floor[k]:CreateTexture(nil,"BACKGROUND")
 		Ground.Floor[k].texture:SetTexture(Textures.Ground0,"REPEAT", "REPEAT");
@@ -36,7 +37,7 @@ function Ground.UpdateFloor()
 	halfFoV = Player.FoV/2;
 	dirPlusFoV = Player.Direction + halfFoV;
 	dirMinusFoV = Player.Direction - halfFoV;
-	verticalFoV = (Canvas.resolution.y / Canvas.resolution.x) * Player.FoV;
+	verticalFoV = (UI.config.height / UI.config.width) * Player.FoV;
 	halfVerticalFoV = verticalFoV / 2;
 	verticalAngleIncrement = halfVerticalFoV / Ground.groundVisLines;
 	oppositeAngle = 90 - halfVerticalFoV;

@@ -7,51 +7,41 @@ local Properties = Zee.Worgenstein.Map.DataTypeProperties;
 local SecondLayerType = Zee.Worgenstein.Map.DataTypeProperties.SecondLayerType;
 local Ground = Zee.Worgenstein.Ground;
 local Door = Zee.Worgenstein.Door;
+local UI = Zee.Worgenstein.UI;
+local Win = Zee.WindowAPI;
 
 -- Properties --
 Canvas.resolution = {};
-Canvas.resolution.x = 640;
-Canvas.resolution.y = 480;
-Canvas.scale = 1.2;
 Canvas.renderDensity = 4;
 Canvas.renderDensityGround = 8;
-Canvas.renderLines = Canvas.resolution.x / Canvas.renderDensity;
---Canvas.renderLinesVertical = Canvas.resolution.y / Canvas.renderDensityGround;
-Canvas.HUDBarHeight = 100;
 Canvas.renderLinesList = {};
 --Canvas.renderLinesGroundList = {};
 Canvas.rayAngle = nil;
-Canvas.WallHeight = Canvas.resolution.y *1;
 Canvas.walkOffset = 0;
 Canvas.ambientLight = { 1, 1, 1 };
 Canvas.fogColor = { 1, 1, 1 }; -- reverse rgb values (1,1,1) = black
 Canvas.fogDistance = 15;
 
 -- Create the canvas elements --
-function Canvas.Create()
+function Canvas.Initialize(width, height)
+    Canvas.width = width;
+    Canvas.height = height;
+    Canvas.WallHeight = Canvas.height * 1;
+    Canvas.renderLines = Canvas.width / Canvas.renderDensity;
 	-- calculate the distance in degrees between each ray
-	Canvas.rayAngle = Player.FoV/Canvas.renderLines;
+	Canvas.rayAngle = Player.FoV / Canvas.renderLines;
 
 	-- create the main frame that will hold the canvas
-	Canvas.mainFrame = CreateFrame("ScrollFrame",nil,UIParent);
-	Canvas.mainFrame:SetFrameStrata("BACKGROUND");
-	Canvas.mainFrame:SetWidth(Canvas.resolution.x) -- Set these to whatever height/width is needed 
-	Canvas.mainFrame:SetHeight(Canvas.resolution.y + Canvas.HUDBarHeight) -- for your Texture
-	Canvas.mainFrame.texture = Canvas.mainFrame:CreateTexture(nil,"BACKGROUND")
-	Canvas.mainFrame.texture:SetColorTexture(0,0,0,1);
-	Canvas.mainFrame.texture:SetAllPoints(Canvas.mainFrame)
-	Canvas.mainFrame:SetPoint("LEFT",100,0);
-	Canvas.mainFrame:Show();
+    Canvas.mainFrame = Win.CreateRectangle(0, 0, Canvas.width, Canvas.height, Zee.Worgenstein.UI.GameWindow, "TOPLEFT", "TOPLEFT", 0, 0, 0, 1);
 	Canvas.mainFrame:SetFrameLevel(8);
 	Canvas.mainFrame:SetClipsChildren(true);
-    Canvas.mainFrame:SetScale(Canvas.scale);
 
 	-- skybox
 	Canvas.skyBox = CreateFrame("PlayerModel",nil,Canvas.mainFrame);
 	Canvas.skyBox:SetFrameStrata("BACKGROUND");
-	Canvas.skyBox:SetWidth(Canvas.resolution.x) -- Set these to whatever height/width is needed 
-	Canvas.skyBox:SetHeight(Canvas.resolution.y + 20) -- for your Texture	
-	Canvas.skyBox:SetPoint("CENTER",0, Canvas.HUDBarHeight /2);
+	Canvas.skyBox:SetWidth(Canvas.width) -- Set these to whatever height/width is needed 
+	Canvas.skyBox:SetHeight(Canvas.height + 20) -- for your Texture	
+	Canvas.skyBox:SetPoint("TOPLEFT",0 , 0);
 	Canvas.skyBox:Show();
 	Canvas.skyBox:SetFrameLevel(9);
 	Canvas.skyBox:SetModel(130623);
@@ -59,20 +49,14 @@ function Canvas.Create()
 	--Canvas.skyBox:SetRotation(0);
 
 	-- create the screen frame where everything is rendered
-	Canvas.renderFrame = CreateFrame("Frame",nil,Canvas.mainFrame);
-	Canvas.renderFrame:SetFrameStrata("BACKGROUND");
-	Canvas.renderFrame:SetWidth(Canvas.resolution.x) -- Set these to whatever height/width is needed 
-	Canvas.renderFrame:SetHeight(Canvas.resolution.y + 20) -- for your Texture
-	Canvas.renderFrame:SetPoint("CENTER",0, Canvas.HUDBarHeight /2);
-	Canvas.renderFrame:Show();
+    Canvas.renderFrame = Win.CreateRectangle(0, 0, Canvas.width, Canvas.height + 20, Canvas.mainFrame, "TOPLEFT", "TOPLEFT");
 	Canvas.renderFrame:SetFrameLevel(10);
-	Canvas.renderFrame:SetClipsChildren(true);	
-	Canvas.mainFrame:SetScrollChild(Canvas.renderFrame);
+	Canvas.renderFrame:SetClipsChildren(true);
 
 	Canvas.groundFrame = CreateFrame("Frame",nil,Canvas.renderFrame);
 	Canvas.groundFrame:SetFrameStrata("BACKGROUND");
-	Canvas.groundFrame:SetWidth(Canvas.resolution.x) -- Set these to whatever height/width is needed 
-	Canvas.groundFrame:SetHeight(Canvas.resolution.y/2 + 20) -- for your Texture
+	Canvas.groundFrame:SetWidth(Canvas.width) -- Set these to whatever height/width is needed 
+	Canvas.groundFrame:SetHeight(Canvas.height/2 + 20) -- for your Texture
 	Canvas.groundFrame.texture = Canvas.groundFrame:CreateTexture(nil,"BACKGROUND")
 	Canvas.groundFrame.texture:SetTexture("Interface\\AddOns\\Worgenstein\\GFX\\Background.blp", false);
 	Canvas.groundFrame.texture:SetTexCoord(0, 1, 0.5, 1)
@@ -96,19 +80,6 @@ function Canvas.Create()
 		Canvas.renderLine:SetFrameLevel(16);	
 		Canvas.renderLinesList[k] = Canvas.renderLine;
 	end
-
-	-- create HUD frame
-	Canvas.HUDFrame = CreateFrame("Frame",nil,Canvas.mainFrame);
-	Canvas.HUDFrame:SetFrameStrata("MEDIUM");
-	Canvas.HUDFrame:SetWidth(Canvas.resolution.x) -- Set these to whatever height/width is needed 
-	Canvas.HUDFrame:SetHeight(Canvas.HUDBarHeight) -- for your Texture
-	Canvas.HUDFrame:SetPoint("BOTTOM",0,0);
-	Canvas.HUDFrame:Show();
-	Canvas.HUDFrame:SetFrameLevel(100);
-	Canvas.HUDFrame.texture = Canvas.HUDFrame:CreateTexture(nil,"BACKGROUND")
-	Canvas.HUDFrame.texture:SetColorTexture(0.5,0.5,0.5,1);
-	Canvas.HUDFrame.texture:SetAllPoints(Canvas.HUDFrame)
-	--Canvas.HUDFrame:SetClipsChildren(true);
 
     Zee.Worgenstein.Ground.CreateFloor();
 end
@@ -181,7 +152,6 @@ function Canvas.Render()
 	Door.DoorAnimation();
 end
 
-
 function Canvas.GetZDepth(distance)
 	local level = 500-(distance*5);
 	if level < 20 then level = 20; end
@@ -212,7 +182,7 @@ function Canvas.Walk()
 	end
 	Canvas.walkOffset = Canvas.walkOffset + 0.1;
 	Canvas.renderFrame:ClearAllPoints();
-	Canvas.renderFrame:SetPoint("CENTER",0, Canvas.HUDBarHeight /2 + (math.sin(Canvas.walkOffset) * Settings.canvasWalkStrength));
+	Canvas.renderFrame:SetPoint("TOPLEFT", 0, math.sin(Canvas.walkOffset) * Settings.canvasWalkStrength);
 end
 
 function Canvas.ResetWalk()

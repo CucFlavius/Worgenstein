@@ -22,6 +22,9 @@ Zee.Worgenstein.Map.DataType = Zee.Worgenstein.Map.DataType or {};
 Zee.Worgenstein.Map.Orientation = Zee.Worgenstein.Map.Orientation or {};
 Zee.Worgenstein.MapEditor = Zee.Worgenstein.MapEditor or {}
 
+-- UI --
+Zee.Worgenstein.UI = Zee.Worgenstein.UI or {};
+
 -- Data --
 Zee.Worgenstein.Data = Zee.Worgenstein.Data or {};
 Zee.Worgenstein.Map.DataType = Zee.Worgenstein.Map.DataType or {};

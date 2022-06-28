@@ -39,7 +39,8 @@ function Win.CreateWindow(posX, posY, sizeX, sizeY, parent, windowPoint, parentP
 	WindowFrame:SetMovable(true);
 	WindowFrame:EnableMouse(true);
     WindowFrame:SetFrameLevel(0);
-	--WindowFrame:SetUserPlaced(true);
+    WindowFrame:SetFrameStrata("BACKGROUND");
+	WindowFrame:SetUserPlaced(true);
 
 	-- title bar frame --
 	WindowFrame.TitleBar = CreateFrame("Frame", "Zee.WindowAPI.Window "..title.. " TitleBar", WindowFrame);
@@ -56,6 +57,7 @@ function Win.CreateWindow(posX, posY, sizeX, sizeY, parent, windowPoint, parentP
 	WindowFrame.TitleBar:RegisterForDrag("LeftButton");
 	WindowFrame.TitleBar:SetScript("OnDragStart", function()  WindowFrame:StartMoving(); end);
 	WindowFrame.TitleBar:SetScript("OnDragStop", function() WindowFrame:StopMovingOrSizing(); end);
+    WindowFrame:SetFrameStrata("BACKGROUND");
     WindowFrame.TitleBar:SetFrameLevel(1);
 
 	-- Close Button --

@@ -150,6 +150,7 @@ function Ray.Cast(id, positionX, positionY, angle, distance)
     previousHitBoxY = floor(positionX);
     hitPointX = 0;
     hitPointY = 0;
+    n = min(20, n);     -- capping traversed cells to increase performance since we don't need to check too far
     for k = 1, n, 1 do
     	if (x <= Map.size and y <= Map.size) then
     		if x < 0 then x = 0; end
@@ -443,7 +444,6 @@ function Ray.Simple(x0, y0, x1, y1)
 	return ray
 end
 
-
 function Ray.SimpleGround(x0, y0, x1, y1)
 	ray.uvDistance = 0;
 	ray.uvDirection = 1;
@@ -512,7 +512,6 @@ function Ray.SimpleGround(x0, y0, x1, y1)
 	end
 	return ray
 end
-
 
 local previousHitPointX = 0;
 local previousHitPointY = 0;
@@ -684,7 +683,6 @@ function Ray.BoxCheck(x0, y0, x1, y1)
 		end
     end
 end
-
 
 -- unused
 function Ray.MinimapHighlightBoxesHit()

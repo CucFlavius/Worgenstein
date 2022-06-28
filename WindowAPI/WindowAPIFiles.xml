@@ -10,5 +10,6 @@ Window API Files
 	<Script file="EditBox.lua"/>
 	<Script file="ImageBox.lua"/>
 	<Script file="Rectangle.lua"/>
+    <Script file="Menu.lua"/>
 	<Script file="Window.lua"/>
 </Ui>

@@ -10,12 +10,13 @@
 ## X-License: GPL
 ## Version: 1.0
 
-InitializeClasses.lua
+Classes.lua
 WindowAPI\WindowAPIFiles.xml
 Data\DataType.lua
 Data\DataTypeNames.lua
 Data\DataTypeProperties.lua
 Debugger.lua
+UI.lua
 Math\Raycasting.lua
 Rendering\Canvas.lua
 Rendering\Ground.lua

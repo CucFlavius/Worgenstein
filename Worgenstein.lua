@@ -14,6 +14,7 @@ local Properties = Zee.Worgenstein.Map.DataTypeProperties;
 local Sprites = Zee.Worgenstein.Sprites;
 local Weapon = Zee.Worgenstein.Weapon;
 local AI = Zee.Worgenstein.AI;
+local UI = Zee.Worgenstein.UI;
 Zee.Worgenstein.Loaded = false;
 Zee.Worgenstein.timeSinceLastUpdate = 0;
 ------------------------------
@@ -23,17 +24,20 @@ function WG.PlayerLogin()
 	
 end
 
+UI.Initialize(640, 480);    -- creating UI at the start (before PlayerLogin) so that the window:SetUserPlaced() works as intended
+
 function WG.VariablesLoaded()
     WorgensteinMapData = WorgensteinMapData or {};
 	Map.GenerateEmpty();
 	Map.LoadData();
 	Map.FillMissingData();
 	Map.LoadDoors();
-	Canvas.Create();
+    
+	Canvas.Initialize(640, 480);
 	Sprites.CreateSpriteFrames();
 	Ray.Cast(0, Player.Position.x, Player.Position.y, Player.Direction, Map.size * math.sqrt(2));
 	Ray.MinimapHighlightBoxesHit();
-	MapEditor.Initialize();
+    MapEditor.Initialize();
 	Player.Spawn();
 	Canvas.Render();
 	Weapon.CreateGunFrame();
@@ -42,7 +46,7 @@ function WG.VariablesLoaded()
 end
 
 function WG.AddonLoaded()
-
+    
 end
 
 function DegreeToRadian(angle)
@@ -130,14 +134,23 @@ function WG.CheckCollision(x,y)
 		end
 	end
 
+    local dataX = math.floor(x + offsetX);
+    local dataY = math.floor(y + offsetY);
+
+    -- map bounds force collision, exiting the map causes weird rendering
+    if dataX < 0 or dataY < 0 or dataX >= Map.size or dataY >= Map.size then
+        return true;
+    end
+
+
 	-- walls
-	if Properties[Map.Data[math.floor(x+offsetX)][math.floor(y+offsetY)]].wall == true then
+	if Properties[Map.Data[dataX][dataY]].wall == true then
 		return true;
 	end
 
 	-- doors
 	--if Properties[Map.Data[math.floor(x+offsetX)][math.floor(y+offsetY)].blockType].door == true and Map.Data[math.floor(x+offsetX)][math.floor(y+offsetY)].property > 0.2 then
-	if Properties[Map.Data[math.floor(x+offsetX)][math.floor(y+offsetY)]].door == true and Map.Doors[math.floor(x+offsetX)][math.floor(y+offsetY)] > 0.2 then
+	if Properties[Map.Data[dataX][dataY]].door == true and Map.Doors[dataX][dataY] > 0.2 then
 		return true;
 	end
 	return false;

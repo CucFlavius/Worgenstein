@@ -18,20 +18,21 @@ function Win.CreateRectangle(posX, posY, sizeX, sizeY, parent, windowPoint, pare
 	if windowPoint == nil then windowPoint = "CENTER"; end
 	if parentPoint == nil then parentPoint = "CENTER"; end
 	if text == nil then text = ""; end
-	if R == nil then R = 0; end
-	if G == nil then G = 0; end
-	if B == nil then B = 0; end
-	if A == nil then A = 1; end
 
+    local isVisible = true;
+    if R == nil or G == nil or B == nil then
+        isVisible = false;
+    end
 
 	-- text box frame --
 	local Rectangle = CreateFrame("Frame", "Zee.WindowAPI.Rectangle", parent);
 	Rectangle:SetPoint(windowPoint, parent, parentPoint, posX, posY);
 	Rectangle:SetSize(sizeX, sizeY);
-	Rectangle.texture = Rectangle:CreateTexture("Zee.WindowAPI.Rectangle texture", "BACKGROUND");
-	Rectangle.texture:SetColorTexture(R,G,B,A);
-	Rectangle.texture:SetAllPoints(Rectangle);
-
+    if isVisible then
+        Rectangle.texture = Rectangle:CreateTexture("Zee.WindowAPI.Rectangle texture", "BACKGROUND");
+        Rectangle.texture:SetColorTexture(R,G,B,A);
+        Rectangle.texture:SetAllPoints(Rectangle);
+    end
 	return Rectangle;
 
 end
